@@ -1,11 +1,14 @@
-<!DOCTYPE html>
+<meta name='viewport' content='width=device-width, initial-scale=1'/><!DOCTYPE html>
 <html lang="ku" dir="rtl">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="google-site-verification" content="CJ2yv6sisr2W9gKyL6IPx__S-k6g_LE42bCBD_H2_uw" />
 <title>پەیڤکۆد | PeyvCode</title>
+<meta name="description" content="پەیڤکۆد؛ تاقیگەی زمان و کۆد -- گەشەپێدانی وێبسایت و ئەپلیکەیشن، دیزاینی UI/UX، کۆپیرایتینگ و وەرگێڕانی پیشەگەرانە.">
 <link rel="icon" type="image/png" href="logo.png">
+<link rel="shortcut icon" href="logo.png">
+<link rel="apple-touch-icon" href="logo.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;600;700;800&family=Noto+Sans+Arabic:wght@400;500;600;700&family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
@@ -67,12 +70,20 @@
     letter-spacing:-0.02em;
   }
 
-  .glyph-line{
-    font-family:'JetBrains Mono',monospace;
-    white-space: pre;
+  .logo-mark{ filter: drop-shadow(0 1px 3px rgba(201,162,75,0.25)); }
+  .logo-word{
+    background: linear-gradient(100deg, #F3E4BE 0%, #C9A24B 45%, #E0A458 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
   }
 
-  .lang-hidden{ display:none !important; }
+  .glyph-line{
+    font-family:'JetBrains Mono',monospace;
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+    word-break: break-word;
+  }
 
   .card-tech{
     background: linear-gradient(180deg, #10151D, #0D1117);
@@ -83,17 +94,6 @@
     border: 1px solid rgba(224,164,88,0.18);
   }
   .dot{ width:7px; height:7px; border-radius:999px; display:inline-block; }
-
-  .underline-grow{
-    position:relative;
-  }
-  .underline-grow::after{
-    content:"";
-    position:absolute; right:0; left:0; bottom:-6px;
-    height:1px; background:linear-gradient(90deg, transparent, #C9A24B, transparent);
-    transform: scaleX(0); transition: transform .5s ease;
-  }
-  .underline-grow.in::after{ transform: scaleX(1); }
 
   .wa-btn{ transition: transform .25s ease, box-shadow .25s ease; }
   .wa-btn:hover{ transform: translateY(-3px); }
@@ -113,11 +113,38 @@
   .menu-open #line2{ opacity:0; }
   .menu-open #line3{ transform: translateY(-7px) rotate(-45deg); }
 
-  .scrollbar-none::-webkit-scrollbar{ display:none; }
-
   @media (prefers-reduced-motion: reduce){
     .fade-up{ transition:none; opacity:1; transform:none; }
   }
+
+  #articleModal{ transition: opacity .3s ease; }
+  #articleModal.hidden{ display:none; }
+  #articleModal.modal-in #articleOverlay{ opacity:1; }
+  #articleModal #articleOverlay{ opacity:0; transition: opacity .3s ease; }
+  #articleModal.modal-in #articlePanel{ opacity:1; transform: translateY(0) scale(1); }
+  #articlePanel{
+    opacity:0; transform: translateY(14px) scale(.98);
+    transition: opacity .35s cubic-bezier(.16,1,.3,1), transform .35s cubic-bezier(.16,1,.3,1);
+    background: linear-gradient(180deg, #141A22, #0E131A);
+    position: relative;
+  }
+  #articlePanel::before{
+    content:"";
+    position:absolute; inset:0 0 auto 0; height:3px;
+    background: linear-gradient(90deg, transparent, #C9A24B, #E0A458, transparent);
+    border-radius: 0.75rem 0.75rem 0 0;
+  }
+  #articleBody p{ margin-bottom:1.15rem; line-height:2; }
+  #articleBody p:first-of-type::first-letter{
+    color:#E0A458; font-weight:700; font-size:1.5em;
+  }
+  .article-divider{
+    width:36px; height:2px; margin: 0.9rem auto 1.4rem;
+    background: linear-gradient(90deg, #C9A24B, #E0A458);
+    border-radius: 999px;
+  }
+  [dir="rtl"] #articleTitle, [dir="rtl"] #articleBody{ text-align: right; }
+  [dir="ltr"] #articleTitle, [dir="ltr"] #articleBody{ text-align: left; }
 </style>
 </head>
 
@@ -126,9 +153,24 @@
 <!-- ============ NAV ============ -->
 <header class="fixed top-0 inset-x-0 z-50 backdrop-blur-md bg-[#0B0F14]/80 border-b hairline">
   <div class="max-w-6xl mx-auto px-5 md:px-8 h-16 flex items-center justify-between">
-    <a href="#home" class="flex items-center gap-2 group">
-      <span class="brand-mark text-lg md:text-xl text-gold border border-gold/40 rounded px-2 py-0.5 group-hover:bg-gold/10 transition">&lt;/&gt;</span>
-      <span class="font-disp font-bold text-lg md:text-xl text-bone" data-ku="پەیڤکۆد" data-ar="بيڤكود" data-en="PeyvCode">پەیڤکۆد</span>
+    <a href="#home" class="flex items-center gap-2.5 group">
+      <svg class="logo-mark w-9 h-9 md:w-10 md:h-10 shrink-0 transition-transform duration-300 group-hover:scale-105" viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <linearGradient id="logoStroke" x1="3" y1="5" x2="37" y2="35" gradientUnits="userSpaceOnUse">
+            <stop offset="0" stop-color="#E0A458"/>
+            <stop offset="1" stop-color="#C9A24B"/>
+          </linearGradient>
+          <linearGradient id="logoFill" x1="20" y1="5" x2="20" y2="35" gradientUnits="userSpaceOnUse">
+            <stop offset="0" stop-color="#171310"/>
+            <stop offset="1" stop-color="#0D1117"/>
+          </linearGradient>
+        </defs>
+        <path d="M37 20 L28.5 34.7 L11.5 34.7 L3 20 L11.5 5.3 L28.5 5.3 Z" fill="url(#logoFill)" stroke="url(#logoStroke)" stroke-width="1.6" stroke-linejoin="round"/>
+        <path d="M18 13 L12 20 L18 27" fill="none" stroke="#E0A458" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M22 13 L28 20 L22 27" fill="none" stroke="#C9A24B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        <circle cx="20" cy="20" r="1.7" fill="#F3E4BE"/>
+      </svg>
+      <span class="font-disp font-bold text-lg md:text-xl logo-word" data-ku="پەیڤکۆد" data-ar="بيڤكود" data-en="PeyvCode">پەیڤکۆد</span>
     </a>
 
     <nav class="hidden md:flex items-center gap-8 text-sm text-fog font-medium">
@@ -141,7 +183,7 @@
 
     <div class="flex items-center gap-3">
       <div class="relative">
-        <button id="langBtn" class="flex items-center gap-1.5 text-xs font-mono border hairline rounded-full px-3 py-1.5 text-bone hover:border-gold/50 transition">
+        <button id="langBtn" class="flex items-center gap-1.5 text-xs font-mono border hairline rounded-full px-3 py-1.5 text-bone hover:border-gold/50 transition" aria-label="Language" aria-haspopup="true" aria-expanded="false">
           <span id="langLabel">KU</span>
           <svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M6 9l6 6 6-6" stroke-width="2" stroke-linecap="round"/></svg>
         </button>
@@ -152,7 +194,7 @@
         </div>
       </div>
 
-      <button id="hamburger" class="md:hidden w-9 h-9 flex flex-col items-center justify-center gap-1.5">
+      <button id="hamburger" class="md:hidden w-9 h-9 flex flex-col items-center justify-center gap-1.5" aria-label="Menu" aria-expanded="false">
         <span id="line1" class="block w-5 h-[1.5px] bg-bone"></span>
         <span id="line2" class="block w-5 h-[1.5px] bg-bone"></span>
         <span id="line3" class="block w-5 h-[1.5px] bg-bone"></span>
@@ -185,19 +227,19 @@
     </h1>
 
     <!-- signature: morphing terminal line -->
-    <div class="mx-auto max-w-xl mb-10 rounded-lg border hairline bg-surface/70 px-5 py-3 text-start">
+    <div class="mx-auto max-w-xl mb-10 rounded-lg border hairline bg-surface/70 px-5 py-3 text-start overflow-hidden">
       <div class="flex items-center gap-1.5 mb-2">
         <span class="w-2 h-2 rounded-full bg-[#E0605A]/70"></span>
         <span class="w-2 h-2 rounded-full bg-[#E0C05A]/70"></span>
         <span class="w-2 h-2 rounded-full bg-[#5AC97C]/70"></span>
       </div>
-      <p id="morphLine" class="glyph-line text-gold text-sm md:text-base">&nbsp;</p>
+      <p id="morphLine" class="glyph-line text-gold text-sm md:text-base h-[1.4em] overflow-hidden">&nbsp;</p>
     </div>
 
     <p class="max-w-2xl mx-auto text-fog text-base md:text-lg mb-10"
        data-ku="بەخێر هاتن بۆ (پەیڤکۆد)؛ ئەو تاقیگە دیجیتاڵیەی کە تێیدا زمانەوانی و تەکنەلۆژیا پێکەوە داهاتوو دەنووسنەوە."
        data-ar="مرحباً بكم في (بيڤكود)؛ المختبر الرقمي الذي تكتب فيه اللغويات والتكنولوجيا المستقبل معاً."
-       data-en="Welcome to PeyvCode — the digital lab where linguistics and technology write the future together.">
+       data-en="Welcome to PeyvCode -- the digital lab where linguistics and technology write the future together.">
       بەخێر هاتن بۆ (پەیڤکۆد)؛ ئەو تاقیگە دیجیتاڵیەی کە تێیدا زمانەوانی و تەکنەلۆژیا پێکەوە داهاتوو دەنووسنەوە.
     </p>
 
@@ -221,7 +263,7 @@
     <p class="max-w-3xl mx-auto text-center text-fog mb-16 fade-up"
        data-ku="لە بەشی خزمەتگوزارییەکانی وێبسایتی «پەیڤکۆد»، ئامانجمان ئەوەیە کە بە ڕوونی نیشانی بدەین ئێمە چۆن لایەنی تەکنیکی و لایەنی زمانەوانی پێکەوە گرێ دەین. پەیڤکۆد تەنها ستۆدیۆیەکی کۆدنەڤیسی نییە، بەڵکو تێکەڵەیەکە لە بەرهەمی تەکنیکیی بەهێز و ناوەڕۆکی زمانەوانیی پڕمانا لە یەک شوێنیدا."
        data-ar="في قسم خدمات موقع «بيڤكود»، هدفنا هو أن نوضح كيف نربط الجانب التقني بالجانب اللغوي معاً. بيڤكود ليس مجرد استوديو برمجة، بل مزيج من منتج تقني قوي ومحتوى لغوي غني في مكان واحد."
-       data-en="In PeyvCode's services, our goal is to show clearly how we tie the technical side to the linguistic side. PeyvCode isn't just a code studio — it's a blend of strong technical work and meaningful language content in one place.">
+       data-en="In PeyvCode's services, our goal is to show clearly how we tie the technical side to the linguistic side. PeyvCode isn't just a code studio -- it's a blend of strong technical work and meaningful language content in one place.">
       لە بەشی خزمەتگوزارییەکانی وێبسایتی «پەیڤکۆد»، ئامانجمان ئەوەیە کە بە ڕوونی نیشانی بدەین ئێمە چۆن لایەنی تەکنیکی و لایەنی زمانەوانی پێکەوە گرێ دەین. پەیڤکۆد تەنها ستۆدیۆیەکی کۆدنەڤیسی نییە، بەڵکو تێکەڵەیەکە لە بەرهەمی تەکنیکیی بەهێز و ناوەڕۆکی زمانەوانیی پڕمانا لە یەک شوێنیدا.
     </p>
 
@@ -232,7 +274,7 @@
           <span class="brand-mark text-gold border border-gold/40 rounded px-2 py-1 text-sm">&lt;/&gt;</span>
           <div>
             <h3 class="font-disp font-bold text-lg text-bone" data-ku="خزمەتگوزارییە تەکنەلۆژییەکان" data-ar="الخدمات التقنية" data-en="Technology Services">خزمەتگوزارییە تەکنەلۆژییەکان</h3>
-            <span class="font-mono text-xs text-fog">— ئەحمەد / Ahmad</span>
+            <span class="font-mono text-xs text-fog">-- ئەحمەد / Ahmad</span>
           </div>
         </div>
         <ul class="space-y-5 text-sm text-fog">
@@ -257,7 +299,7 @@
           <span class="font-disp text-amber border border-amber/40 rounded px-2 py-1 text-sm">ﭖ</span>
           <div>
             <h3 class="font-disp font-bold text-lg text-bone" data-ku="خزمەتگوزارییە زمانەوانییەکان" data-ar="الخدمات اللغوية" data-en="Linguistic Services">خزمەتگوزارییە زمانەوانییەکان</h3>
-            <span class="font-mono text-xs text-fog">— نورا / Noura</span>
+            <span class="font-mono text-xs text-fog">-- نورا / Noura</span>
           </div>
         </div>
         <ul class="space-y-5 text-sm text-fog">
@@ -289,7 +331,7 @@
     <p class="max-w-3xl mx-auto text-center text-fog mb-14 fade-up"
        data-ku="بلاگ لە وێبسایتی «پەیڤکۆد» ئەو پەنجەرەیەیە کە تێیدا لایەنی زانیاری، ڕۆشنبیری و داهێنانی پڕۆژەکە دەردەکەوێت. ئەم بەشە وەک بنکەیەک دەبێت بۆ بڵاوکردنەوەی وتار و بابەتی قووڵ (وەک: تێکەڵکردنی زمان و کۆد، و بابەتی پڕزانیاری بە چەند زمانێک)."
        data-ar="مدونة موقع «بيڤكود» هي النافذة التي يظهر من خلالها الجانب المعرفي والثقافي والإبداعي للمشروع. يُعد هذا القسم قاعدة لنشر المقالات والمواضيع العميقة (مثل: مزج اللغة بالكود، ومواضيع غنية بالمعلومات بعدة لغات)."
-       data-en="PeyvCode's blog is the window into the project's knowledge, culture, and creativity. This section is a home for publishing deep articles — like blending language with code — in multiple languages.">
+       data-en="PeyvCode's blog is the window into the project's knowledge, culture, and creativity. This section is a home for publishing deep articles -- like blending language with code -- in multiple languages.">
       بلاگ لە وێبسایتی «پەیڤکۆد» ئەو پەنجەرەیەیە کە تێیدا لایەنی زانیاری، ڕۆشنبیری و داهێنانی پڕۆژەکە دەردەکەوێت. ئەم بەشە وەک بنکەیەک دەبێت بۆ بڵاوکردنەوەی وتار و بابەتی قووڵ (وەک: تێکەڵکردنی زمان و کۆد، و بابەتی پڕزانیاری بە چەند زمانێک).
     </p>
 
@@ -310,18 +352,28 @@
     <p class="max-w-3xl mx-auto text-center text-fog mb-16 fade-up"
        data-ku="پەیڤکۆد لە ئەنجامی بەیەکگەیشتنی دوو دیدگای جیاواز دروست بوو؛ لۆژیکی ئەندازیاری و قووڵایی زمانەوانی. ئێمە باوەڕمان وابوو کە جیهانی دیجیتاڵ تەنها بریتی نییە لە هێڵەکانی کۆد، بەڵکو پێویستی بە مانای ڕوون و پەیامی بڕواپێنکراویش هەیە."
        data-ar="وُلدت بيڤكود من التقاء رؤيتين مختلفتين: منطق الهندسة وعمق اللغة. نؤمن أن العالم الرقمي لا يقتصر على أسطر الكود، بل يحتاج أيضاً إلى معنى واضح ورسالة مقنعة."
-       data-en="PeyvCode was born from the meeting of two different views: engineering logic and linguistic depth. We believe the digital world isn't just lines of code — it also needs clear meaning and a convincing message.">
+       data-en="PeyvCode was born from the meeting of two different views: engineering logic and linguistic depth. We believe the digital world isn't just lines of code -- it also needs clear meaning and a convincing message.">
       پەیڤکۆد لە ئەنجامی بەیەکگەیشتنی دوو دیدگای جیاواز دروست بوو؛ لۆژیکی ئەندازیاری و قووڵایی زمانەوانی. ئێمە باوەڕمان وابوو کە جیهانی دیجیتاڵ تەنها بریتی نییە لە هێڵەکانی کۆد، بەڵکو پێویستی بە مانای ڕوون و پەیامی بڕواپێنکراویش هەیە.
     </p>
 
     <div class="grid sm:grid-cols-2 gap-6">
       <div class="rounded-xl border hairline p-7 bg-surface/60 fade-up">
-        <div class="w-12 h-12 rounded-full bg-gold/10 border border-gold/30 flex items-center justify-center font-disp font-bold text-gold mb-5">ئ</div>
+        <div class="w-12 h-12 rounded-full bg-gold/10 border border-gold/30 flex items-center justify-center text-gold mb-5">
+          <svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="10" cy="14" r="6"/>
+            <path d="M14.5 9.5L20 4M14 4h6v6"/>
+          </svg>
+        </div>
         <h3 class="font-disp font-bold text-lg text-bone mb-2" data-ku="ئەحمەد" data-ar="أحمد" data-en="Ahmad">ئەحمەد</h3>
-        <p class="text-sm text-fog" data-ku="بەرپرس لە لایەنی تەکنیکی، کۆدنەڤیسی و بنیاتنانی سیستمی بێگەرد و مۆدێرن." data-ar="مسؤول عن الجانب التقني، البرمجة، وبناء أنظمة متكاملة وحديثة." data-en="Leads the technical side — coding and building polished, modern systems.">بەرپرس لە لایەنی تەکنیکی، کۆدنەڤیسی و بنیاتنانی سیستمی بێگەرد و مۆدێرن.</p>
+        <p class="text-sm text-fog" data-ku="بەرپرس لە لایەنی تەکنیکی، کۆدنەڤیسی و بنیاتنانی سیستمی بێگەرد و مۆدێرن." data-ar="مسؤول عن الجانب التقني، البرمجة، وبناء أنظمة متكاملة وحديثة." data-en="Leads the technical side -- coding and building polished, modern systems.">بەرپرس لە لایەنی تەکنیکی، کۆدنەڤیسی و بنیاتنانی سیستمی بێگەرد و مۆدێرن.</p>
       </div>
       <div class="rounded-xl border hairline p-7 bg-surface/60 fade-up">
-        <div class="w-12 h-12 rounded-full bg-amber/10 border border-amber/30 flex items-center justify-center font-disp font-bold text-amber mb-5">ن</div>
+        <div class="w-12 h-12 rounded-full bg-amber/10 border border-amber/30 flex items-center justify-center text-amber mb-5">
+          <svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="9" r="6"/>
+            <path d="M12 15v6M9 18h6"/>
+          </svg>
+        </div>
         <h3 class="font-disp font-bold text-lg text-bone mb-2" data-ku="نورا" data-ar="نورا" data-en="Noura">نورا</h3>
         <p class="text-sm text-fog" data-ku="بەرپرس لە لایەنی ناوەڕۆک، کۆپیرایتینگ، و داڕشتنی زمانەوانی و پەیامەکان." data-ar="مسؤولة عن جانب المحتوى، الكتابة الإعلانية، وصياغة اللغة والرسائل." data-en="Leads content, copywriting, and the shaping of language and messaging.">بەرپرس لە لایەنی ناوەڕۆک، کۆپیرایتینگ، و داڕشتنی زمانەوانی و پەیامەکان.</p>
       </div>
@@ -335,21 +387,31 @@
     <span class="font-mono text-xs text-amber tracking-widest fade-up" data-ku="پەیوەندی" data-ar="تواصل" data-en="CONTACT">پەیوەندی</span>
     <h2 class="font-disp font-bold text-2xl md:text-4xl text-bone mt-3 mb-14 fade-up" data-ku="گفتوگۆ دەست پێبکە" data-ar="ابدأ المحادثة" data-en="Start the conversation">گفتوگۆ دەست پێبکە</h2>
 
-    <div class="grid sm:grid-cols-2 gap-6">
+    <div class="grid sm:grid-cols-2 gap-5 items-stretch">
       <a href="https://wa.me/9647728931728" target="_blank" rel="noopener"
-         class="wa-btn fade-up rounded-xl border border-gold/30 bg-gradient-to-b from-[#171009] to-[#12161D] p-7 flex flex-col items-center gap-3 hover:shadow-xl hover:shadow-gold/10">
-        <svg class="w-9 h-9 text-gold" viewBox="0 0 32 32" fill="currentColor"><path d="M16.001 3C9.373 3 4 8.373 4 15c0 2.386.7 4.61 1.902 6.472L4 29l7.727-1.87A11.94 11.94 0 0016 27c6.628 0 12-5.373 12-12S22.629 3 16.001 3zm0 21.818a9.78 9.78 0 01-4.99-1.365l-.358-.213-4.583 1.11 1.223-4.47-.234-.372A9.79 9.79 0 015.182 15c0-5.964 4.854-10.818 10.819-10.818S26.818 9.036 26.818 15 21.965 24.818 16.001 24.818z"/></svg>
-        <p class="font-disp font-bold text-bone" data-ku="واتساپی ئەحمەد" data-ar="واتساب أحمد" data-en="Ahmad's WhatsApp">واتساپی ئەحمەد</p>
-        <p class="text-xs text-fog" data-ku="(تەکنیکی)" data-ar="(تقني)" data-en="(Technical)">(تەکنیکی)</p>
-        <p class="font-mono text-sm text-gold" dir="ltr">+964 772 893 1728</p>
+         class="wa-btn fade-up group rounded-xl border border-gold/25 bg-gradient-to-b from-[#171009] to-[#12161D] p-6 flex items-center gap-4 hover:border-gold/60 hover:shadow-xl hover:shadow-gold/10">
+        <span class="shrink-0 w-14 h-14 rounded-full bg-gold/10 border border-gold/30 flex items-center justify-center group-hover:bg-gold/15 transition">
+          <svg class="w-7 h-7 text-gold" viewBox="0 0 32 32" fill="currentColor"><path d="M16.001 3C9.373 3 4 8.373 4 15c0 2.386.7 4.61 1.902 6.472L4 29l7.727-1.87A11.94 11.94 0 0016 27c6.628 0 12-5.373 12-12S22.629 3 16.001 3zm0 21.818a9.78 9.78 0 01-4.99-1.365l-.358-.213-4.583 1.11 1.223-4.47-.234-.372A9.79 9.79 0 015.182 15c0-5.964 4.854-10.818 10.819-10.818S26.818 9.036 26.818 15 21.965 24.818 16.001 24.818z"/></svg>
+        </span>
+        <span class="flex-1 text-start min-w-0">
+          <span class="block text-[11px] text-fog mb-1" data-ku="تەکنیکی" data-ar="تقني" data-en="Technical">تەکنیکی</span>
+          <span class="block font-disp font-bold text-bone" data-ku="واتساپی ئەحمەد" data-ar="واتساب أحمد" data-en="Ahmad's WhatsApp">واتساپی ئەحمەد</span>
+          <span class="block font-mono text-sm text-gold mt-1" dir="ltr">+964 772 893 1728</span>
+        </span>
+        <svg class="w-4 h-4 shrink-0 text-fog group-hover:text-gold rtl:rotate-180 transition" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M9 5l7 7-7 7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
       </a>
 
       <a href="https://wa.me/9647518962481" target="_blank" rel="noopener"
-         class="wa-btn fade-up rounded-xl border border-amber/30 bg-gradient-to-b from-[#171009] to-[#12161D] p-7 flex flex-col items-center gap-3 hover:shadow-xl hover:shadow-amber/10">
-        <svg class="w-9 h-9 text-amber" viewBox="0 0 32 32" fill="currentColor"><path d="M16.001 3C9.373 3 4 8.373 4 15c0 2.386.7 4.61 1.902 6.472L4 29l7.727-1.87A11.94 11.94 0 0016 27c6.628 0 12-5.373 12-12S22.629 3 16.001 3zm0 21.818a9.78 9.78 0 01-4.99-1.365l-.358-.213-4.583 1.11 1.223-4.47-.234-.372A9.79 9.79 0 015.182 15c0-5.964 4.854-10.818 10.819-10.818S26.818 9.036 26.818 15 21.965 24.818 16.001 24.818z"/></svg>
-        <p class="font-disp font-bold text-bone" data-ku="واتساپی نورا" data-ar="واتساب نورا" data-en="Noura's WhatsApp">واتساپی نورا</p>
-        <p class="text-xs text-fog" data-ku="(زمانەوانی)" data-ar="(لغوي)" data-en="(Linguistic)">(زمانەوانی)</p>
-        <p class="font-mono text-sm text-amber" dir="ltr">+964 751 896 2481</p>
+         class="wa-btn fade-up group rounded-xl border border-amber/25 bg-gradient-to-b from-[#171009] to-[#12161D] p-6 flex items-center gap-4 hover:border-amber/60 hover:shadow-xl hover:shadow-amber/10">
+        <span class="shrink-0 w-14 h-14 rounded-full bg-amber/10 border border-amber/30 flex items-center justify-center group-hover:bg-amber/15 transition">
+          <svg class="w-7 h-7 text-amber" viewBox="0 0 32 32" fill="currentColor"><path d="M16.001 3C9.373 3 4 8.373 4 15c0 2.386.7 4.61 1.902 6.472L4 29l7.727-1.87A11.94 11.94 0 0016 27c6.628 0 12-5.373 12-12S22.629 3 16.001 3zm0 21.818a9.78 9.78 0 01-4.99-1.365l-.358-.213-4.583 1.11 1.223-4.47-.234-.372A9.79 9.79 0 015.182 15c0-5.964 4.854-10.818 10.819-10.818S26.818 9.036 26.818 15 21.965 24.818 16.001 24.818z"/></svg>
+        </span>
+        <span class="flex-1 text-start min-w-0">
+          <span class="block text-[11px] text-fog mb-1" data-ku="زمانەوانی" data-ar="لغوي" data-en="Linguistic">زمانەوانی</span>
+          <span class="block font-disp font-bold text-bone" data-ku="واتساپی نورا" data-ar="واتساب نورا" data-en="Noura's WhatsApp">واتساپی نورا</span>
+          <span class="block font-mono text-sm text-amber mt-1" dir="ltr">+964 751 896 2481</span>
+        </span>
+        <svg class="w-4 h-4 shrink-0 text-fog group-hover:text-amber rtl:rotate-180 transition" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M9 5l7 7-7 7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
       </a>
     </div>
   </div>
@@ -359,16 +421,46 @@
 <footer class="border-t hairline px-5 md:px-8 py-10">
   <div class="max-w-6xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-fog">
     <div class="flex items-center gap-2">
-      <span class="brand-mark text-gold border border-gold/30 rounded px-1.5 py-0.5">&lt;/&gt;</span>
-      <span class="font-disp" data-ku="پەیڤکۆد" data-ar="بيڤكود" data-en="PeyvCode">پەیڤکۆد</span>
+      <svg class="w-6 h-6 shrink-0" viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg">
+        <path d="M37 20 L28.5 34.7 L11.5 34.7 L3 20 L11.5 5.3 L28.5 5.3 Z" fill="url(#logoFill)" stroke="url(#logoStroke)" stroke-width="1.6" stroke-linejoin="round"/>
+        <path d="M18 13 L12 20 L18 27" fill="none" stroke="#E0A458" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M22 13 L28 20 L22 27" fill="none" stroke="#C9A24B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        <circle cx="20" cy="20" r="1.7" fill="#F3E4BE"/>
+      </svg>
+      <span class="font-disp logo-word font-semibold" data-ku="پەیڤکۆد" data-ar="بيڤكود" data-en="PeyvCode">پەیڤکۆد</span>
     </div>
-    <p data-ku="© ٢٠٢٦ پەیڤکۆد. هەموو مافەکان پارێزراون." data-ar="© 2026 بيڤكود. جميع الحقوق محفوظة." data-en="© 2026 PeyvCode. All rights reserved.">© ٢٠٢٦ پەیڤکۆد. هەموو مافێک پارێزراوە.</p>
+    <p data-ku="© ٢٠٢٦ پەیڤکۆد. هەموو مافەکان پارێزراون." data-ar="© 2026 بيڤكود. جميع الحقوق محفوظة." data-en="© 2026 PeyvCode. All rights reserved.">© ٢٠٢٦ پەیڤکۆد. هەموو مافەکان پارێزراون.</p>
   </div>
 </footer>
 
+<!-- ============ ARTICLE MODAL ============ -->
+<div id="articleModal" class="hidden fixed inset-0 z-[60] flex items-center justify-center p-4">
+  <div id="articleOverlay" class="absolute inset-0 bg-black/70 backdrop-blur-sm"></div>
+  <div id="articlePanel" class="relative w-full max-w-2xl max-h-[85vh] overflow-y-auto rounded-xl border hairline p-6 md:p-10 shadow-2xl shadow-black/50">
+    <button id="articleClose" aria-label="Close" class="absolute top-5 end-5 w-8 h-8 flex items-center justify-center rounded-full border hairline text-fog hover:text-bone hover:border-gold/50 hover:bg-white/5 transition">
+      <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M6 6l12 12M18 6L6 18" stroke-width="2" stroke-linecap="round"/></svg>
+    </button>
+
+    <div class="flex items-center gap-2 mb-5 pe-10">
+      <svg class="w-5 h-5 shrink-0 opacity-80" viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg">
+        <path d="M37 20 L28.5 34.7 L11.5 34.7 L3 20 L11.5 5.3 L28.5 5.3 Z" fill="url(#logoFill)" stroke="url(#logoStroke)" stroke-width="1.6" stroke-linejoin="round"/>
+        <path d="M18 13 L12 20 L18 27" fill="none" stroke="#E0A458" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M22 13 L28 20 L22 27" fill="none" stroke="#C9A24B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        <circle cx="20" cy="20" r="1.7" fill="#F3E4BE"/>
+      </svg>
+      <span id="articleTag" class="text-xs font-mono text-amber border border-amber/30 rounded-full px-2.5 py-1"></span>
+      <span id="articleDate" class="text-xs font-mono text-fog"></span>
+    </div>
+
+    <h3 id="articleTitle" class="font-disp font-bold text-bone text-xl md:text-3xl leading-snug"></h3>
+    <div class="article-divider"></div>
+    <div id="articleBody" class="text-sm md:text-base text-fog"></div>
+  </div>
+</div>
+
 <script>
 /* =====================================================================
-   1. SIMULATED DATABASE — Blog posts
+   1. SIMULATED DATABASE -- Blog posts
    In production this array is replaced by a fetch() call to a real
    backend (MySQL / PostgreSQL / Firebase) returning the same shape.
    Each post carries all 3 languages so the card re-renders instantly
@@ -388,6 +480,26 @@ const BLOG_POSTS = [
       ku: "لێکۆڵینەوەیەک لە هاوشێوەیی نێوان ڕستەسازیی زمانی کوردی و ڕستەسازیی زمانە پڕۆگرامسازییەکان.",
       ar: "دراسة في أوجه التشابه بين تركيب اللغة الكردية وتركيب لغات البرمجة.",
       en: "A short study on the surprising parallels between Kurdish grammar and programming syntax."
+    },
+    content: {
+      ku: [
+        "یەکەم جار کە مرۆڤ کۆدنووسین فێردەبێت، زۆر جار پێی وایە دوو جیهانی جیاواز دەبینێت: جیهانی زمان کە پڕە لە هەست و مانا، و جیهانی کۆد کە وشک و لۆژیکییە. بەڵام ئەگەر وردتر تەماشای هەردووکیان بکەیت، دەبینیت هەردووکیان لە بنەڕەتدا هەمان کارێک دەکەن -- ڕیزکردنی نیشانەکان بەپێی ڕێسایەک بۆ گەیاندنی مانایەک.",
+        "زمانی کوردی وەک زۆر زمانی تر، پشت بە پۆلاسازی ڕستە دەبەستێت: ناوی کەسی کار، کردار، و ئامرازەکان هەریەکە شوێنی خۆیان هەیە. کۆدیش هەروایە -- گۆڕاوێک، فەنکشنێک، پارامیتەرێک -- هەریەکە پێویستی بە شوێنی دیاریکراوە بۆ ئەوەی کۆمپایلەر یان لێکدەرەوە تێی بگات. لەبەرئەوە، کەسێک کە شارەزایی زمانەوانی هەیە، زۆرجار خێراتر لە ڕستەسازیی کۆددا تێدەگات، چونکە جێی خۆی لە بیرکردنەوەی دووبارە بۆ 'ڕیزبەندی و پۆلاسازی' هەیە.",
+        "لە پڕۆژەکانی پەیڤکۆد، ئێمە زۆرجار ئەم بیرۆکەیە بەکاردەهێنین کاتێک UI-یەک بۆ بەکارهێنەرێکی کورد دادەڕێژین: وشەیەک کە لە ڕووی ڕێزماندا ڕاستە، لە ڕووی تەکنیکییەوەش دەبێت لە شوێنی ڕاستدا بێت. ئەمە تەنها وەرگێڕان نییە، بەڵکو چەسپاندنی هەردوو سیستەمی مانایە پێکەوە.",
+        "بۆیە کاتێک کەسێک دەڵێت 'من نازانم کۆدنووسی چۆنە، من زمانەوانم' -- ئێمە پێی دەڵێین: تۆ بەبێ ئەوەی هەستی پێبکەیت، ڕۆژانە بیرکردنەوەی کۆدنووسان دەکەیت. تەنها پێویستە زمانەکەت بگۆڕیت."
+      ],
+      ar: [
+        "عندما يبدأ أحدهم بتعلّم البرمجة، غالباً ما يشعر أنه أمام عالمين منفصلين: عالم اللغة المليء بالمعنى والعاطفة، وعالم الكود الجاف والمنطقي. لكن عند التمعّن أكثر، نجد أن كليهما يقومان بالشيء نفسه في جوهرهما -- ترتيب رموز وفق قاعدة معينة لإيصال معنى.",
+        "اللغة الكردية، كغيرها من اللغات، تعتمد على بنية الجملة: الفاعل والفعل والأدوات لكل منها موقعه الخاص. الكود مثله تماماً -- متغيّر، دالة، معامل، لكل منها موقع محدد يجب أن يفهمه المترجم أو المفسّر. لهذا فإن من يملك حساً لغوياً غالباً ما يفهم تركيب الكود بسرعة أكبر.",
+        "في مشاريع بيڤكود، نستخدم هذه الفكرة كثيراً عند تصميم واجهة لمستخدم كردي: الكلمة التي تكون صحيحة نحوياً يجب أن تكون أيضاً في موقعها التقني الصحيح. هذا ليس مجرد ترجمة، بل مواءمة بين نظامي معنى مختلفين.",
+        "لذلك عندما يقول أحدهم 'أنا لا أفهم البرمجة، أنا شخص لغوي' -- نجيبه: أنت بالفعل تفكر برمجياً كل يوم دون أن تشعر. كل ما تحتاجه هو تغيير اللغة التي تفكر بها."
+      ],
+      en: [
+        "When someone first starts learning to code, it often feels like stepping into two separate worlds: the world of language, full of meaning and nuance, and the world of code, dry and mechanical. But look closer, and both are doing the same fundamental thing -- arranging symbols according to a rule in order to carry meaning.",
+        "Kurdish, like many languages, relies on sentence structure: subject, verb, and modifiers each have their place. Code works the same way -- a variable, a function, a parameter, each needs its exact position for a compiler or interpreter to make sense of it. That's why people with strong language instincts often pick up code structure faster than they expect.",
+        "In PeyvCode's own projects, we lean on this idea constantly when designing an interface for a Kurdish-speaking user: a word that is grammatically correct also has to sit in the technically correct place. That's not just translation -- it's aligning two systems of meaning at once.",
+        "So when someone tells us 'I don't understand code, I'm a language person' -- our answer is simple: you already think in code every day, you just haven't noticed. All you need is to switch the language you're thinking in."
+      ]
     }
   },
   {
@@ -403,6 +515,29 @@ const BLOG_POSTS = [
       ku: "چۆن مانای ڕاستەقینەی دەقی تەکنیکی بپارێزین کاتێک لە یەک زمانەوە دەیگوازینەوە بۆ زمانێکی تر.",
       ar: "كيف نحافظ على المعنى الحقيقي للنص التقني عند نقله من لغة إلى أخرى.",
       en: "How to preserve the true meaning of technical text when moving it between languages."
+    },
+    content: {
+      ku: [
+        "١. وشە بە وشە وەرمەگێڕە، مانا وەربگێڕە: دەقی تەکنیکی زۆرجار ڕستەی کورت و ڕاستەوخۆ بەکاردەهێنێت. وەرگێڕانی وشە بە وشە زۆرجار دەقێک دروست دەکات کە لە ڕووی ڕێزمانەوە ڕاستە، بەڵام لە ڕووی مانای پیشەییەوە سارد و بێگانەیە.",
+        "٢. تێرمی تەکنیکی جێی خۆی هەبێت: هەندێک وشە (وەک 'API'، 'server') باشترە بە هەمان شێوە بمێننەوە یان بە تێرمێکی ستانداردی زمانی مەبەست بگۆڕدرێن -- نەک وەرگێڕانێکی کەللە بە کەللە کە کەس تێی ناگات.",
+        "٣. تۆنی دەق بپارێزە: دەقی تەکنیکی هەندێک جار فەرمییە، هەندێک جاریش دۆستانەیە. کاتێک لە زمانێکەوە دەگوازیتەوە بۆ زمانێکی تر، پێویستە هەمان ئاستی فەرمیبوون یان نزیکی بپارێزیت.",
+        "٤. بۆ بەکارهێنەری کۆتایی بنووسە، نەک بۆ خۆت: زۆرجار وەرگێڕ لە بواری خۆیدا شارەزایە و لەوانەیە زانیاری زیادە بخاتە دەقەکەوە کە بەکارهێنەر پێویستی پێی نییە. با دەقەکە بۆ ئاستی خوێنەرەکە بگونجێت.",
+        "٥. دووبارە بیخوێنەوە بەبێ دەقی سەرەکی: کۆتا هەنگاو ئەوەیە دەقی وەرگێڕدراو بخوێنیتەوە وەک ئەوەی نووسینێکی سەرەتایی بێت، بەبێ ئەوەی سەیری دەقی ڕەسەن بکەیت. ئەگەر خۆی بە خۆی ڕوون و سروشتی بوو، ئەوا وەرگێڕانەکە سەرکەوتووە."
+      ],
+      ar: [
+        "١. لا تترجم كلمة بكلمة، ترجم المعنى: النصوص التقنية غالباً ما تستخدم جملاً قصيرة ومباشرة. الترجمة الحرفية غالباً ما تنتج نصاً صحيحاً نحوياً لكنه بارد وغريب من الناحية المهنية.",
+        "٢. اترك للمصطلحات التقنية مكانها: بعض الكلمات (مثل 'API'، 'server') من الأفضل إبقاؤها كما هي أو استبدالها بمصطلح معياري في اللغة الهدف -- لا بترجمة حرفية لا يفهمها أحد.",
+        "٣. حافظ على نبرة النص: النص التقني أحياناً رسمي وأحياناً ودّي. عند نقله من لغة إلى أخرى، يجب الحفاظ على نفس درجة الرسمية أو القرب.",
+        "٤. اكتب للمستخدم النهائي، لا لنفسك: أحياناً يكون المترجم خبيراً في مجاله ويضيف تفاصيل زائدة لا يحتاجها المستخدم. اجعل النص مناسباً لمستوى القارئ.",
+        "٥. أعد القراءة دون النص الأصلي: الخطوة الأخيرة هي قراءة النص المترجم وكأنه نص أصلي، دون النظر إلى النص المصدر. إذا كان واضحاً وطبيعياً بذاته، فالترجمة نجحت."
+      ],
+      en: [
+        "1. Don't translate word for word -- translate meaning: technical text tends to use short, direct sentences. A literal translation often produces something grammatically correct but professionally cold and foreign-sounding.",
+        "2. Let technical terms keep their place: some words (like 'API', 'server') are often best left as-is, or swapped for a standard term in the target language -- not a literal translation nobody recognizes.",
+        "3. Preserve the tone: technical writing is sometimes formal, sometimes friendly. When moving between languages, that same level of formality needs to carry over.",
+        "4. Write for the end user, not for yourself: translators are often domain experts and may add extra detail the reader doesn't actually need. Match the text to the reader's level.",
+        "5. Re-read it without the source text: the final step is reading the translation as if it were an original piece of writing, without glancing at the source. If it reads clearly and naturally on its own, the translation has done its job."
+      ]
     }
   },
   {
@@ -418,6 +553,29 @@ const BLOG_POSTS = [
       ku: "خاڵە گرنگەکان کاتێک ڕووکارێک دادەڕێژیت کە دەبێت بە کوردی و عەرەبیش کار بکات.",
       ar: "النقاط المهمة عند تصميم واجهة يجب أن تعمل بالكردية والعربية أيضاً.",
       en: "The key considerations when a UI must also work flawlessly in Kurdish and Arabic."
+    },
+    content: {
+      ku: [
+        "زۆر دیزاینەر کە فێری کاتی خۆی لەگەڵ ڕووکاری ئینگلیزی بووە، کاتێک یەکەم جار دەست بە پڕۆژەیەکی کوردی یان عەرەبی دەکات، هەست بە سەرلێشێواوی دەکات. هۆکارەکە ئاسانە: هەموو شتێک -- لە ئایکۆنی پەڕگرتنەوە بگرە تا شوێنی دوگمە -- دەبێت لە ئاوێنەدا ببینرێتەوە.",
+        "یەکەم شت کە دەبێت لەبیرت بێت: 'ڕاست-بۆ-چەپ' تەنها گۆڕینی ئاراستەی دەق نییە. ئایکۆنی 'گەڕانەوە' کە لە ئینگلیزیدا بەرەو چەپ ئاراستە دەکات، لە کورددا دەبێت بەرەو ڕاست بێت. هەروەها شوێنی مینیو، شریتی پێشکەوتن، تەنانەت شوێنی نۆتیفیکەیشنیش دەگۆڕێت.",
+        "خاڵی دووەم: تایپۆگرافیا. فۆنتی کوردی و عەرەبی پێویستی بە بەرزیی دێڕی جیاوازە لەگەڵ فۆنتی لاتینی، چونکە پیتەکان شێوازی جیاوازیان هەیە. ئەگەر هەمان بەرزیی دێڕی فۆنتی ئینگلیزی بەکاربهێنیت، دەقەکە پرچەکراو یان تەنگ دەردەکەوێت.",
+        "خاڵی سێیەم: تاقیکردنەوە. بەشێوەیەکی ڕاستەقینە، دیزاینێکی RTL تەنها بە گۆڕینی ڕووکارێکی LTR دروست نابێت -- پێویستە لە سەرەتاوە بە بیرکردنەوەی ڕاست-بۆ-چەپ داڕێژرێت، دواتر بۆ ئینگلیزیش بگونجێنرێت، نەک پێچەوانەکەی.",
+        "لە پەیڤکۆددا، ئێمە هەمیشە پرۆژە بە زمانی ڕەسەنەکەیەوە دەست پێدەکەین -- بۆ زۆربەی کڕیارەکانمان کوردی -- پاشان بۆ زمانەکانی تر فراوانی دەکەین. ئەم شێوازە یارمەتیدەرە بۆ ئەوەی هەستی 'وەرگێڕدراو' نەدات، بەڵکو هەست بکرێت بۆ هەر زمانێک بە تایبەتی دیزاین کراوە."
+      ],
+      ar: [
+        "كثير من المصممين الذين اعتادوا العمل مع واجهات إنجليزية يشعرون بالارتباك عند بدء أول مشروع كردي أو عربي. السبب بسيط: كل شيء -- من أيقونة الرجوع إلى موقع الأزرار -- يجب أن يُرى في المرآة.",
+        "أول ما يجب تذكره: 'من اليمين إلى اليسار' ليس مجرد تغيير اتجاه النص. أيقونة 'الرجوع' التي تشير يساراً في الإنجليزية يجب أن تشير يميناً في الكردية. كذلك يتغيّر موقع القائمة، شريط التقدّم، وحتى موقع الإشعارات.",
+        "النقطة الثانية: الطباعة (Typography). الخطوط الكردية والعربية تحتاج ارتفاع سطر مختلف عن الخطوط اللاتينية، لأن شكل الحروف مختلف. استخدام نفس ارتفاع سطر الخط الإنجليزي يجعل النص متكدساً أو ضيقاً.",
+        "النقطة الثالثة: الاختبار. تصميم RTL حقيقي لا يُبنى بمجرد قلب واجهة LTR -- يجب تصميمه من الأساس بمنطق اليمين إلى اليسار، ثم يُكيَّف لاحقاً للإنجليزية، لا العكس.",
+        "في بيڤكود، نبدأ دائماً بالمشروع بلغته الأصلية -- الكردية غالباً لعملائنا -- ثم نوسّعه للغات أخرى. هذا الأسلوب يساعد على ألا يبدو الأمر 'مترجماً'، بل مصمماً خصيصاً لكل لغة."
+      ],
+      en: [
+        "Many designers who've spent their careers on English interfaces feel disoriented the first time they take on a Kurdish or Arabic project. The reason is simple: everything -- from the back-arrow icon to where buttons sit -- has to be seen as if in a mirror.",
+        "The first thing to remember: right-to-left isn't just flipping text direction. A 'back' icon that points left in English needs to point right in Kurdish. The same goes for menu placement, progress bars, and even where notifications appear.",
+        "Second: typography. Kurdish and Arabic fonts need different line heights than Latin fonts, because the letterforms behave differently. Reuse an English font's line height and the text ends up cramped or overlapping.",
+        "Third: testing. A genuine RTL design isn't built by flipping an LTR layout -- it has to be designed from the ground up with right-to-left logic, then adapted for English afterward, not the other way around.",
+        "At PeyvCode, we always start a project in its native language -- Kurdish, for most of our clients -- then expand outward to other languages. That approach keeps things from feeling 'translated' and instead makes each language feel purpose-built."
+      ]
     }
   },
   {
@@ -430,15 +588,38 @@ const BLOG_POSTS = [
       en: "How Copy Becomes Part of the Product"
     },
     excerpt: {
-      ku: "دەق تەنها ڕازاندنەوە نییە، بەشێکە لە ئەزموونی بەکارهێنەر — نموونە لە پڕۆژەکانمان.",
-      ar: "النص ليس مجرد زخرفة، بل جزء من تجربة المستخدم — أمثلة من مشاريعنا.",
-      en: "Copy isn't decoration — it's part of the user experience. Examples from our projects."
+      ku: "دەق تەنها ڕازاندنەوە نییە، بەشێکە لە ئەزموونی بەکارهێنەر -- نموونە لە پڕۆژەکانمان.",
+      ar: "النص ليس مجرد زخرفة، بل جزء من تجربة المستخدم -- أمثلة من مشاريعنا.",
+      en: "Copy isn't decoration -- it's part of the user experience. Examples from our projects."
+    },
+    content: {
+      ku: [
+        "زۆر خاوەن پڕۆژە بیر لەوە دەکەنەوە کە دەق -- نووسینی نێو دوگمە، پەیامی هەڵە، ڕێنماییەکان -- شتێکی کۆتاییە کە دوای تەواوبوونی دیزاین و کۆد زیاد دەکرێت. بەڵام لە ڕاستیدا، دەق یەکێکە لە کاریگەرترین بەشەکانی ئەزموونی بەکارهێنەر.",
+        "وەرە بیر لەوە بکەرەوە: دوگمەیەک کە تیایدا نووسراوە 'ناردن' لەگەڵ دوگمەیەک کە تیایدا نووسراوە 'با پەیامەکەت بنێرین'، هەردووکیان کارێکی یەکسان دەکەن، بەڵام هەستی جیاواز بە بەکارهێنەر دەدەن. یەکەمیان ڕەسمییە و سارد، دووەمیان گەرم و نزیکە لە بەکارهێنەر.",
+        "لە پڕۆژەکانمان، جارێک کڕیارێکمان هەبوو کە ڕێژەی وازهێنانی بەکارهێنەران لە فۆرمێکی تۆمارکردندا بەرز بوو. کاتێک وردبووینەوە، کێشەکە لە دیزایندا نەبوو، بەڵکو لە دەقی هەڵەکاندا بوو: 'خەتای ٤٠٤' بۆ کەسێکی ئاسایی هیچ مانایەکی نییە. کاتێک گۆڕامانە بۆ 'ئیمەیڵەکەت هەڵەیە، تکایە دووبارە بینووسەرەوە'، ڕێژەی تەواوکردنی فۆرمەکە بەرزبووەوە.",
+        "ئەمە بۆچی گرنگە بۆ ئێمە: کۆپیرایتینگ تەنها لە بەشی بازاڕگەری نییە. دەبێت لە یەکەم ڕۆژی دیزاینی ڕووکارەوە بەشدار بێت، هاوکات لەگەڵ تیمی تەکنیکی، نەک وەک هەنگاوی کۆتایی.",
+        "لەبەرئەوەی پەیڤکۆد لە یەک ستۆدیۆدا لایەنی تەکنیکی و لایەنی زمانەوانی کۆدەکاتەوە، دەقی هەر پرۆژەیەک لە هەمان کاتدا لەگەڵ کۆدەکەی گەشە دەکات -- نەک دوای تەواوبوونی."
+      ],
+      ar: [
+        "كثير من أصحاب المشاريع يعتقدون أن النص -- كلمات الأزرار، رسائل الخطأ، الإرشادات -- أمر أخير يُضاف بعد اكتمال التصميم والبرمجة. لكن في الواقع، النص من أكثر أجزاء تجربة المستخدم تأثيراً.",
+        "فكّر في الأمر: زر كُتب عليه 'إرسال' مقابل زر كُتب عليه 'لنرسل رسالتك'، كلاهما يقوم بنفس الوظيفة، لكنهما يمنحان المستخدم شعوراً مختلفاً تماماً. الأول رسمي وبارد، والثاني دافئ وقريب من المستخدم.",
+        "في أحد مشاريعنا، كان لدى عميل معدل تسرّب مرتفع في نموذج تسجيل. عند التدقيق، لم تكن المشكلة في التصميم، بل في نصوص الأخطاء: 'خطأ 404' لا يعني شيئاً لشخص عادي. عندما غيّرناها إلى 'بريدك الإلكتروني غير صحيح، الرجاء إعادة كتابته'، ارتفع معدل إتمام النموذج بشكل ملحوظ.",
+        "هذا سبب أهمية الأمر بالنسبة لنا: الكتابة الإعلانية ليست حكراً على قسم التسويق. يجب أن تكون حاضرة منذ اليوم الأول لتصميم الواجهة، جنباً إلى جنب مع الفريق التقني، لا كخطوة أخيرة.",
+        "ولأن بيڤكود يجمع الجانب التقني واللغوي في استوديو واحد، فإن نص كل مشروع ينمو مع الكود في نفس الوقت -- لا بعد اكتماله."
+      ],
+      en: [
+        "Many project owners think of copy -- button labels, error messages, guidance text -- as something added at the end, after design and code are finished. In reality, copy is one of the most influential parts of the user experience.",
+        "Consider this: a button labeled 'Submit' versus one labeled 'Let's send your message' -- both do the same thing, but they leave the user with a completely different feeling. One is formal and cold; the other is warm and personal.",
+        "In one of our projects, a client had a high drop-off rate on a signup form. When we dug in, the problem wasn't the design -- it was the error copy. 'Error 404' means nothing to an ordinary user. Once we changed it to 'That email doesn't look right, please try again,' form completion rates rose noticeably.",
+        "That's why this matters to us: copywriting isn't just marketing's job. It needs to be in the room from day one of interface design, working alongside the technical team, not tacked on as a final step.",
+        "Because PeyvCode brings the technical and linguistic sides together in one studio, every project's copy grows alongside its code at the same time -- not after it."
+      ]
     }
   }
 ];
 
 /* =====================================================================
-   2. TRANSLATIONS — page chrome that isn't marked with data-ku/ar/en
+   2. TRANSLATIONS -- page chrome that isn't marked with data-ku/ar/en
 ===================================================================== */
 const LANG_META = {
   ku: { dir: "rtl", code: "ku", label: "KU", readMore: "زیاتر بخوێنەرەوە" },
@@ -458,12 +639,54 @@ function renderBlog(lang){
       </div>
       <h3 class="font-disp font-bold text-bone text-base mb-2 leading-snug">${post.title[lang]}</h3>
       <p class="text-sm text-fog mb-5 flex-1">${post.excerpt[lang]}</p>
-      <span class="text-xs font-semibold text-gold inline-flex items-center gap-1 cursor-pointer w-fit">
+      <button type="button" class="read-more-btn text-xs font-semibold text-gold inline-flex items-center gap-1 cursor-pointer w-fit hover:text-amber transition" data-id="${post.id}">
         ${LANG_META[lang].readMore} →
-      </span>
+      </button>
     </article>
   `).join("");
+
+  document.querySelectorAll(".read-more-btn").forEach(btn => {
+    btn.addEventListener("click", () => openArticle(Number(btn.dataset.id)));
+  });
 }
+
+/* ---------- Article modal ---------- */
+const articleModal = document.getElementById("articleModal");
+const articlePanel = document.getElementById("articlePanel");
+
+function openArticle(id){
+  const post = BLOG_POSTS.find(p => p.id === id);
+  if (!post) return;
+  const lang = currentLang;
+
+  document.getElementById("articleDate").textContent = post.date[lang];
+  document.getElementById("articleTag").textContent = post.tag[lang];
+  document.getElementById("articleTitle").textContent = post.title[lang];
+  document.getElementById("articleBody").innerHTML = post.content[lang].map(p => `<p>${p}</p>`).join("");
+
+  articleModal.dataset.openId = id;
+  articleModal.classList.remove("hidden");
+  document.body.style.overflow = "hidden";
+  articlePanel.scrollTop = 0;
+  requestAnimationFrame(() => requestAnimationFrame(() => {
+    articleModal.classList.add("modal-in");
+  }));
+}
+
+function closeArticle(){
+  articleModal.classList.remove("modal-in");
+  document.body.style.overflow = "";
+  setTimeout(() => {
+    articleModal.classList.add("hidden");
+    delete articleModal.dataset.openId;
+  }, 300);
+}
+
+document.getElementById("articleClose").addEventListener("click", closeArticle);
+document.getElementById("articleOverlay").addEventListener("click", closeArticle);
+document.addEventListener("keydown", (e) => {
+  if (e.key === "Escape" && !articleModal.classList.contains("hidden")) closeArticle();
+});
 
 function applyLang(lang){
   currentLang = lang;
@@ -478,17 +701,24 @@ function applyLang(lang){
 
   renderBlog(lang);
   document.getElementById("langMenu").classList.add("hidden");
+
+  if (articleModal && articleModal.dataset.openId){
+    openArticle(Number(articleModal.dataset.openId));
+  }
 }
 
 document.querySelectorAll(".lang-opt").forEach(btn => {
   btn.addEventListener("click", () => applyLang(btn.dataset.lang));
 });
-document.getElementById("langBtn").addEventListener("click", () => {
-  document.getElementById("langMenu").classList.toggle("hidden");
+const langBtnEl = document.getElementById("langBtn");
+langBtnEl.addEventListener("click", () => {
+  const isHidden = document.getElementById("langMenu").classList.toggle("hidden");
+  langBtnEl.setAttribute("aria-expanded", String(!isHidden));
 });
 document.addEventListener("click", (e) => {
   if (!e.target.closest("#langBtn") && !e.target.closest("#langMenu")){
     document.getElementById("langMenu").classList.add("hidden");
+    langBtnEl.setAttribute("aria-expanded", "false");
   }
 });
 
@@ -497,7 +727,8 @@ const hamburger = document.getElementById("hamburger");
 const mobileMenu = document.getElementById("mobileMenu");
 hamburger.addEventListener("click", () => {
   hamburger.classList.toggle("menu-open");
-  mobileMenu.classList.toggle("hidden");
+  const isHidden = mobileMenu.classList.toggle("hidden");
+  hamburger.setAttribute("aria-expanded", String(!isHidden));
 });
 document.querySelectorAll(".mobile-link").forEach(link => {
   link.addEventListener("click", () => {
@@ -516,9 +747,9 @@ document.querySelectorAll(".fade-up").forEach(el => observer.observe(el));
 
 /* signature hero terminal: code <-> Kurdish hook, typed & erased */
 const MORPH_STRINGS = [
-  'const zar = "زمان";  // peyv → code',
-  'پەیڤ  →  کۆد  →  مانا',
-  'function translate(peyv) { return code(peyv); }'
+  'const peyv = "زمان";',
+  'پەیڤ → کۆد → مانا',
+  'peyv() => code()'
 ];
 let mIndex = 0, mChar = 0, mDeleting = false;
 const morphEl = document.getElementById("morphLine");
