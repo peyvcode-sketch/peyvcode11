@@ -1,4 +1,4 @@
-<meta name='viewport' content='width=device-width, initial-scale=1'/><!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="ku" dir="rtl">
 <head>
 <meta charset="UTF-8">
@@ -140,9 +140,12 @@
     aspect-ratio: 16 / 10;
     overflow: hidden;
     background: #0D1319;
+    border-radius: 0.75rem 0.75rem 0 0;
+    box-shadow: inset 0 0 0 1px rgba(201,162,75,0.08), 0 18px 32px -18px rgba(0,0,0,0.55);
   }
   .blog-img-frame img{
-    width: 100%; height: 100%; object-fit: cover;
+    display:block;
+    width: 100%; height: 100%; object-fit: cover; object-position: center;
     transition: transform .7s cubic-bezier(.16,1,.3,1), filter .5s ease;
     filter: saturate(1.05);
   }
@@ -174,8 +177,12 @@
     position:relative; overflow:hidden; border-radius:0.75rem;
     aspect-ratio: 16/9;
     border: 1px solid rgba(201,162,75,0.20);
+    box-shadow: 0 20px 40px -20px rgba(0,0,0,0.6);
   }
-  .article-img-frame img{ width:100%; height:100%; object-fit:cover; }
+  .article-img-frame img{ display:block; width:100%; height:100%; object-fit:cover; object-position:center; }
+  @media (max-width: 480px){
+    .article-img-frame{ border-radius: 0.6rem; }
+  }
 
   .fade-up{ opacity:0; transform: translateY(18px); transition: opacity .7s ease, transform .7s ease; }
   .fade-up.in{ opacity:1; transform: translateY(0); }
@@ -663,7 +670,7 @@
     </button>
 
     <div id="articleImageWrap" class="article-img-frame mb-6">
-      <img id="articleImage" src="" alt="">
+      <img id="articleImage" src="" alt="" loading="lazy">
     </div>
 
     <div class="flex items-center gap-2 mb-5 pe-10">
@@ -695,7 +702,7 @@ const BLOG_POSTS = [
   {
     id: 1,
     image: "Blag1.jpg",
-    date: { ku: "١ی ئایلولی ٢٠٢٦", ar: "1 سبتمبر 2026", en: "Sep 1, 2026" },
+    date: { ku: "١ی ئایلولی ٢٠٢٦", ar: "1 سبتمبر 2026", en: "1 Sep 2026" },
     tag:  { ku: "ناساندن", ar: "تعريف", en: "Introduction" },
     title: {
       ku: "پەیڤکۆد چییە و بۆچی لێرەین؟",
@@ -722,7 +729,7 @@ const BLOG_POSTS = [
   {
     id: 2,
     image: "Blag2.png",
-    date: { ku: "١ی ئایلولی ٢٠٢٦", ar: "1 سبتمبر 2026", en: "Sep 1, 2026" },
+    date: { ku: "١ی ئایلولی ٢٠٢٦", ar: "1 سبتمبر 2026", en: "1 Sep 2026" },
     tag:  { ku: "ڕووکار", ar: "الواجهة", en: "Interface" },
     title: {
       ku: "یەکەم بینین؛ بۆچی ڕووکاری وێبسایت گرنگە؟",
@@ -736,10 +743,10 @@ const BLOG_POSTS = [
     },
     content: {
       ku: [
-        "کاتێک سەردانکەرێک دەچێتە ناو وێبسایتەکەتەوە، تەنها چەند چرکەیەکی کەمت هەیە بۆ ئەوەی سەرنجی ڕابکێشیت. دیزاینی ڕووی پێشەوە (Front-end) وەک ڕوخساری پڕۆژەکەت وایە؛ ئەگەر خێرا، ڕێک و ئاسوودەبێت بۆ چاو، سەردانیکەرەکە دەمێنێتەوە. ئێمە لە پەیڤکۆد گرنگییەکی تایبەت بە وردەکارییەکانی UI/UX دەدەین بۆ ئەوەی بەکارهێنەر ئەزموونێکی ناوازەی هەبێت."
+        "کاتێک سەردانکەرێک دەچێتە ناو وێبسایتەکەتەوە، تەنها چەند چرکەیەکی کەمت هەیە بۆ ئەوەی سەرنجی ڕابکێشیت. دیزاینی ڕووی پێشەوە (<span dir=\"ltr\">Front-end</span>) وەک ڕوخساری پڕۆژەکەت وایە؛ ئەگەر خێرا، ڕێک و ئاسوودەبێت بۆ چاو، سەردانیکەرەکە دەمێنێتەوە. ئێمە لە پەیڤکۆد گرنگییەکی تایبەت بە وردەکارییەکانی <span dir=\"ltr\">UI/UX</span> دەدەین بۆ ئەوەی بەکارهێنەر ئەزموونێکی ناوازەی هەبێت."
       ],
       ar: [
-        "عندما يدخل زائر إلى موقعك الإلكتروني، لا يكون أمامك سوى بضع ثوانٍ قليلة لجذب انتباهه. تصميم الواجهة الأمامية (Front-end) هو بمثابة وجه مشروعك؛ فإذا كان سريعاً ومرتباً ومريحاً للعين، سيبقى الزائر. نولي في بيڤكود اهتماماً خاصاً بتفاصيل تجربة وواجهة المستخدم (UI/UX) لضمان حصول المستخدم على تجربة مميزة."
+        "عندما يدخل زائر إلى موقعك الإلكتروني، لا يكون أمامك سوى بضع ثوانٍ قليلة لجذب انتباهه. تصميم الواجهة الأمامية (<span dir=\"ltr\">Front-end</span>) هو بمثابة وجه مشروعك؛ فإذا كان سريعاً ومرتباً ومريحاً للعين، سيبقى الزائر. نولي في بيڤكود اهتماماً خاصاً بتفاصيل تجربة وواجهة المستخدم (<span dir=\"ltr\">UI/UX</span>) لضمان حصول المستخدم على تجربة مميزة."
       ],
       en: [
         "When a visitor lands on your website, you have only a few seconds to catch their attention. Front-end design is the face of your project; if it's fast, clean, and easy on the eyes, visitors stay. At PeyvCode, we pay special attention to UI/UX details so users get a genuinely distinctive experience."
@@ -749,7 +756,7 @@ const BLOG_POSTS = [
   {
     id: 3,
     image: "Blag3.png",
-    date: { ku: "١ی ئایلولی ٢٠٢٦", ar: "1 سبتمبر 2026", en: "Sep 1, 2026" },
+    date: { ku: "١ی ئایلولی ٢٠٢٦", ar: "1 سبتمبر 2026", en: "1 Sep 2026" },
     tag:  { ku: "هاوکاری", ar: "التعاون", en: "Collaboration" },
     title: {
       ku: "چۆن دەتوانین هاوکاری پڕۆژە دیجیتاڵییەکانتان بکەین؟",
