@@ -220,6 +220,7 @@
     border-radius: 999px;
   }
   [dir="rtl"] #articleTitle, [dir="rtl"] #articleBody{ text-align: right; }
+  [dir="rtl"] span[dir="ltr"]{ white-space: nowrap; unicode-bidi: isolate; display: inline-block; }
   [dir="ltr"] #articleTitle, [dir="ltr"] #articleBody{ text-align: left; }
 </style>
 </head>
@@ -746,7 +747,7 @@ const BLOG_POSTS = [
         "کاتێک سەردانکەرێک دەچێتە ناو وێبسایتەکەتەوە، تەنها چەند چرکەیەکی کەمت هەیە بۆ ئەوەی سەرنجی ڕابکێشیت. دیزاینی ڕووی پێشەوە (<span dir=\"ltr\">Front-end</span>) وەک ڕوخساری پڕۆژەکەت وایە؛ ئەگەر خێرا، ڕێک و ئاسوودەبێت بۆ چاو، سەردانیکەرەکە دەمێنێتەوە. ئێمە لە پەیڤکۆد گرنگییەکی تایبەت بە وردەکارییەکانی <span dir=\"ltr\">UI/UX</span> دەدەین بۆ ئەوەی بەکارهێنەر ئەزموونێکی ناوازەی هەبێت."
       ],
       ar: [
-        "عندما يدخل زائر إلى موقعك الإلكتروني، لا يكون أمامك سوى بضع ثوانٍ قليلة لجذب انتباهه. تصميم الواجهة الأمامية (<span dir=\"ltr\">Front-end</span>) هو بمثابة وجه مشروعك؛ فإذا كان سريعاً ومرتباً ومريحاً للعين، سيبقى الزائر. نولي في بيڤكود اهتماماً خاصاً بتفاصيل تجربة وواجهة المستخدم (<span dir=\"ltr\">UI/UX</span>) لضمان حصول المستخدم على تجربة مميزة."
+        "عندما يدخل زائر إلى موقعك الإلكتروني، لا يكون أمامك سوى بضع ثوانٍ قليلة لجذب انتباهه. تصميم الواجهة الأمامية هو بمثابة وجه مشروعك؛ فإذا كان سريعاً ومرتباً ومريحاً للعين، سيبقى الزائر. نولي في بيڤكود اهتماماً خاصاً بتفاصيل تجربة وواجهة المستخدم (<span dir=\"ltr\">UI/UX</span>) لضمان حصول المستخدم على تجربة مميزة."
       ],
       en: [
         "When a visitor lands on your website, you have only a few seconds to catch their attention. Front-end design is the face of your project; if it's fast, clean, and easy on the eyes, visitors stay. At PeyvCode, we pay special attention to UI/UX details so users get a genuinely distinctive experience."
