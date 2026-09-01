@@ -131,9 +131,51 @@
   .blog-card{
     background: rgba(18,24,33,0.6);
     border: 1px solid rgba(201,162,75,0.10);
-    transition: border-color .3s ease, transform .3s ease;
+    transition: border-color .3s ease, transform .3s ease, box-shadow .3s ease;
   }
-  .blog-card:hover{ border-color: rgba(201,162,75,0.4); transform: translateY(-4px); }
+  .blog-card:hover{ border-color: rgba(201,162,75,0.4); transform: translateY(-4px); box-shadow: 0 24px 48px -20px rgba(0,0,0,0.65); }
+
+  .blog-img-frame{
+    position: relative;
+    aspect-ratio: 16 / 10;
+    overflow: hidden;
+    background: #0D1319;
+  }
+  .blog-img-frame img{
+    width: 100%; height: 100%; object-fit: cover;
+    transition: transform .7s cubic-bezier(.16,1,.3,1), filter .5s ease;
+    filter: saturate(1.05);
+  }
+  .blog-card:hover .blog-img-frame img{ transform: scale(1.08); }
+  .blog-img-frame .blog-img-overlay{
+    position:absolute; inset:0;
+    background: linear-gradient(180deg, rgba(11,15,20,0) 45%, rgba(11,15,20,0.92) 100%);
+    pointer-events:none;
+  }
+  .blog-img-frame .blog-img-corner{
+    position:absolute; width:18px; height:18px;
+    border-color:#C9A24B; opacity:.75; pointer-events:none;
+    transition: opacity .3s ease, width .3s ease, height .3s ease;
+  }
+  .blog-card:hover .blog-img-frame .blog-img-corner{ width:24px; height:24px; opacity:1; }
+  .blog-img-corner.tl{ top:10px; inset-inline-start:10px; border-top:2px solid; border-inline-start:2px solid; border-start-start-radius:6px; }
+  .blog-img-corner.br{ bottom:10px; inset-inline-end:10px; border-bottom:2px solid; border-inline-end:2px solid; border-end-end-radius:6px; }
+  .blog-img-tag{
+    position:absolute; top:12px; inset-inline-start:12px;
+    backdrop-filter: blur(6px);
+    background: rgba(11,15,20,0.55);
+  }
+  .blog-img-date{
+    position:absolute; bottom:12px; inset-inline-end:12px;
+    backdrop-filter: blur(6px);
+    background: rgba(11,15,20,0.55);
+  }
+  .article-img-frame{
+    position:relative; overflow:hidden; border-radius:0.75rem;
+    aspect-ratio: 16/9;
+    border: 1px solid rgba(201,162,75,0.20);
+  }
+  .article-img-frame img{ width:100%; height:100%; object-fit:cover; }
 
   .fade-up{ opacity:0; transform: translateY(18px); transition: opacity .7s ease, transform .7s ease; }
   .fade-up.in{ opacity:1; transform: translateY(0); }
@@ -620,6 +662,10 @@
       <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M6 6l12 12M18 6L6 18" stroke-width="2" stroke-linecap="round"/></svg>
     </button>
 
+    <div id="articleImageWrap" class="article-img-frame mb-6">
+      <img id="articleImage" src="" alt="">
+    </div>
+
     <div class="flex items-center gap-2 mb-5 pe-10">
       <svg class="w-5 h-5 shrink-0 opacity-80" viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg">
         <path d="M37 20 L28.5 34.7 L11.5 34.7 L3 20 L11.5 5.3 L28.5 5.3 Z" fill="url(#logoFill)" stroke="url(#logoStroke)" stroke-width="1.6" stroke-linejoin="round"/>
@@ -648,150 +694,85 @@
 const BLOG_POSTS = [
   {
     id: 1,
-    date: { ku: "١٢ی ئابی ٢٠٢٦", ar: "12 أغسطس 2026", en: "Aug 12, 2026" },
-    tag:  { ku: "زمان و کۆد", ar: "اللغة والكود", en: "Language & Code" },
+    image: "Blag1.jpg",
+    date: { ku: "١ی ئایلولی ٢٠٢٦", ar: "1 سبتمبر 2026", en: "Sep 1, 2026" },
+    tag:  { ku: "ناساندن", ar: "تعريف", en: "Introduction" },
     title: {
-      ku: "کاتێک تۆکینەکان لە پیتی کوردی دەچن",
-      ar: "عندما تشبه الرموز البرمجية الحروف الكردية",
-      en: "When Tokens Start to Look Like Kurdish Letters"
+      ku: "پەیڤکۆد چییە و بۆچی لێرەین؟",
+      ar: "ما هو بيڤكود ولماذا نحن هنا؟",
+      en: "What Is PeyvCode, and Why Are We Here?"
     },
     excerpt: {
-      ku: "لێکۆڵینەوەیەک لە هاوشێوەیی نێوان ڕستەسازیی زمانی کوردی و ڕستەسازیی زمانە پڕۆگرامسازییەکان.",
-      ar: "دراسة في أوجه التشابه بين تركيب اللغة الكردية وتركيب لغات البرمجة.",
-      en: "A short study on the surprising parallels between Kurdish grammar and programming syntax."
+      ku: "لەم بابەتەدا باس لەوە دەکەین کە پەیڤکۆد چییە و بۆچی زمان و کۆد لەلای ئێمە هەمیشە پێکەوە دەڕۆن.",
+      ar: "في هذا المقال نتحدث عمّا هو بيڤكود ولماذا تسير اللغة والكود معاً دائماً في مشاريعنا.",
+      en: "In this post, we explain what PeyvCode is and why language and code always move together in our work."
     },
     content: {
       ku: [
-        "یەکەم جار کە مرۆڤ کۆدنووسین فێردەبێت، زۆر جار پێی وایە دوو جیهانی جیاواز دەبینێت: جیهانی زمان کە پڕە لە هەست و مانا، و جیهانی کۆد کە وشک و لۆژیکییە. بەڵام ئەگەر وردتر تەماشای هەردووکیان بکەیت، دەبینیت هەردووکیان لە بنەڕەتدا هەمان کارێک دەکەن -- ڕیزکردنی نیشانەکان بەپێی ڕێسایەک بۆ گەیاندنی مانایەک.",
-        "زمانی کوردی وەک زۆر زمانی تر، پشت بە پۆلاسازی ڕستە دەبەستێت: ناوی کەسی کار، کردار، و ئامرازەکان هەریەکە شوێنی خۆیان هەیە. کۆدیش هەروایە -- گۆڕاوێک، فەنکشنێک، پارامیتەرێک -- هەریەکە پێویستی بە شوێنی دیاریکراوە بۆ ئەوەی کۆمپایلەر یان لێکدەرەوە تێی بگات. لەبەرئەوە، کەسێک کە شارەزایی زمانەوانی هەیە، زۆرجار خێراتر لە ڕستەسازیی کۆددا تێدەگات، چونکە جێی خۆی لە بیرکردنەوەی دووبارە بۆ 'ڕیزبەندی و پۆلاسازی' هەیە.",
-        "لە پڕۆژەکانی پەیڤکۆد، ئێمە زۆرجار ئەم بیرۆکەیە بەکاردەهێنین کاتێک UI-یەک بۆ بەکارهێنەرێکی کورد دادەڕێژین: وشەیەک کە لە ڕووی ڕێزماندا ڕاستە، لە ڕووی تەکنیکییەوەش دەبێت لە شوێنی ڕاستدا بێت. ئەمە تەنها وەرگێڕان نییە، بەڵکو چەسپاندنی هەردوو سیستەمی مانایە پێکەوە.",
-        "بۆیە کاتێک کەسێک دەڵێت 'من نازانم کۆدنووسی چۆنە، من زمانەوانم' -- ئێمە پێی دەڵێین: تۆ بەبێ ئەوەی هەستی پێبکەیت، ڕۆژانە بیرکردنەوەی کۆدنووسان دەکەیت. تەنها پێویستە زمانەکەت بگۆڕیت."
+        "لە جیهانی ئەمڕۆی دجیتاڵدا، پەرەپێدانی وێبسایت و دروستکردنی ناوەڕۆک دوو شتن کە ناتوانرێت لێک جیا بکرێنەوە. ئێمە لە \"پەیڤکۆد\" باوەڕمان بەوە هەیە کە تەنها نووسینی کۆد بەس نییە، بەڵکو چۆنیەتی گەیاندنی پەیامەکە بە زمانێکی پاراو و دیزاینێکی سەرنجڕاکێش کلیڵی سەرکەوتنە. ئامانجی سەرەکیمان ئەوەیە کە پرۆژە دیجیتاڵییەکانتان بە کوالێتییەکی بەرز و بە شێوازێکی زانستی پەرەپێبدەین."
       ],
       ar: [
-        "عندما يبدأ أحدهم بتعلّم البرمجة، غالباً ما يشعر أنه أمام عالمين منفصلين: عالم اللغة المليء بالمعنى والعاطفة، وعالم الكود الجاف والمنطقي. لكن عند التمعّن أكثر، نجد أن كليهما يقومان بالشيء نفسه في جوهرهما -- ترتيب رموز وفق قاعدة معينة لإيصال معنى.",
-        "اللغة الكردية، كغيرها من اللغات، تعتمد على بنية الجملة: الفاعل والفعل والأدوات لكل منها موقعه الخاص. الكود مثله تماماً -- متغيّر، دالة، معامل، لكل منها موقع محدد يجب أن يفهمه المترجم أو المفسّر. لهذا فإن من يملك حساً لغوياً غالباً ما يفهم تركيب الكود بسرعة أكبر.",
-        "في مشاريع بيڤكود، نستخدم هذه الفكرة كثيراً عند تصميم واجهة لمستخدم كردي: الكلمة التي تكون صحيحة نحوياً يجب أن تكون أيضاً في موقعها التقني الصحيح. هذا ليس مجرد ترجمة، بل مواءمة بين نظامي معنى مختلفين.",
-        "لذلك عندما يقول أحدهم 'أنا لا أفهم البرمجة، أنا شخص لغوي' -- نجيبه: أنت بالفعل تفكر برمجياً كل يوم دون أن تشعر. كل ما تحتاجه هو تغيير اللغة التي تفكر بها."
+        "في عالم اليوم الرقمي، أصبح تطوير المواقع الإلكترونية وصناعة المحتوى أمرين لا يمكن فصلهما. نؤمن في «بيڤكود» أنّ كتابة الكود وحدها لا تكفي، بل إنّ كيفية إيصال الرسالة بلغة راقية وتصميم لافت هي مفتاح النجاح. هدفنا الأساسي هو تطوير مشاريعكم الرقمية بجودة عالية وبأسلوب علمي مدروس."
       ],
       en: [
-        "When someone first starts learning to code, it often feels like stepping into two separate worlds: the world of language, full of meaning and nuance, and the world of code, dry and mechanical. But look closer, and both are doing the same fundamental thing -- arranging symbols according to a rule in order to carry meaning.",
-        "Kurdish, like many languages, relies on sentence structure: subject, verb, and modifiers each have their place. Code works the same way -- a variable, a function, a parameter, each needs its exact position for a compiler or interpreter to make sense of it. That's why people with strong language instincts often pick up code structure faster than they expect.",
-        "In PeyvCode's own projects, we lean on this idea constantly when designing an interface for a Kurdish-speaking user: a word that is grammatically correct also has to sit in the technically correct place. That's not just translation -- it's aligning two systems of meaning at once.",
-        "So when someone tells us 'I don't understand code, I'm a language person' -- our answer is simple: you already think in code every day, you just haven't noticed. All you need is to switch the language you're thinking in."
+        "In today's digital world, building a website and creating content have become inseparable. At PeyvCode, we believe that writing code alone isn't enough -- how a message is delivered, through refined language and striking design, is the real key to success. Our main goal is to develop your digital projects with high quality and a methodical, research-driven approach."
       ]
     }
   },
   {
     id: 2,
-    date: { ku: "٢٨ی تەممووزی ٢٠٢٦", ar: "28 يوليو 2026", en: "Jul 28, 2026" },
-    tag:  { ku: "وەرگێڕان", ar: "الترجمة", en: "Translation" },
+    image: "Blag2.png",
+    date: { ku: "١ی ئایلولی ٢٠٢٦", ar: "1 سبتمبر 2026", en: "Sep 1, 2026" },
+    tag:  { ku: "ڕووکار", ar: "الواجهة", en: "Interface" },
     title: {
-      ku: "٥ فێڵی وەرگێڕانی وردی تەکنیکی",
-      ar: "5 حيل للترجمة التقنية الدقيقة",
-      en: "5 Tricks for Precise Technical Translation"
+      ku: "یەکەم بینین؛ بۆچی ڕووکاری وێبسایت گرنگە؟",
+      ar: "الانطباع الأول؛ لماذا واجهة الموقع مهمة؟",
+      en: "First Impressions: Why Does a Website's Interface Matter?"
     },
     excerpt: {
-      ku: "چۆن مانای ڕاستەقینەی دەقی تەکنیکی بپارێزین کاتێک لە یەک زمانەوە دەیگوازینەوە بۆ زمانێکی تر.",
-      ar: "كيف نحافظ على المعنى الحقيقي للنص التقني عند نقله من لغة إلى أخرى.",
-      en: "How to preserve the true meaning of technical text when moving it between languages."
+      ku: "چەند چرکەیەکی کەم بەشی چارەنووسی مانەوە یان چوونی سەردانکەرێک دیاری دەکات، بۆیە ڕووکار زۆر گرنگە.",
+      ar: "بضع ثوانٍ قليلة تحدد مصير بقاء الزائر أو مغادرته، لذلك تُعد الواجهة أمراً بالغ الأهمية.",
+      en: "A visitor's first few seconds decide whether they stay or leave -- which is why interface design matters so much."
     },
     content: {
       ku: [
-        "١. وشە بە وشە وەرمەگێڕە، مانا وەربگێڕە: دەقی تەکنیکی زۆرجار ڕستەی کورت و ڕاستەوخۆ بەکاردەهێنێت. وەرگێڕانی وشە بە وشە زۆرجار دەقێک دروست دەکات کە لە ڕووی ڕێزمانەوە ڕاستە، بەڵام لە ڕووی مانای پیشەییەوە سارد و بێگانەیە.",
-        "٢. تێرمی تەکنیکی جێی خۆی هەبێت: هەندێک وشە (وەک 'API'، 'server') باشترە بە هەمان شێوە بمێننەوە یان بە تێرمێکی ستانداردی زمانی مەبەست بگۆڕدرێن -- نەک وەرگێڕانێکی کەللە بە کەللە کە کەس تێی ناگات.",
-        "٣. تۆنی دەق بپارێزە: دەقی تەکنیکی هەندێک جار فەرمییە، هەندێک جاریش دۆستانەیە. کاتێک لە زمانێکەوە دەگوازیتەوە بۆ زمانێکی تر، پێویستە هەمان ئاستی فەرمیبوون یان نزیکی بپارێزیت.",
-        "٤. بۆ بەکارهێنەری کۆتایی بنووسە، نەک بۆ خۆت: زۆرجار وەرگێڕ لە بواری خۆیدا شارەزایە و لەوانەیە زانیاری زیادە بخاتە دەقەکەوە کە بەکارهێنەر پێویستی پێی نییە. با دەقەکە بۆ ئاستی خوێنەرەکە بگونجێت.",
-        "٥. دووبارە بیخوێنەوە بەبێ دەقی سەرەکی: کۆتا هەنگاو ئەوەیە دەقی وەرگێڕدراو بخوێنیتەوە وەک ئەوەی نووسینێکی سەرەتایی بێت، بەبێ ئەوەی سەیری دەقی ڕەسەن بکەیت. ئەگەر خۆی بە خۆی ڕوون و سروشتی بوو، ئەوا وەرگێڕانەکە سەرکەوتووە."
+        "کاتێک سەردانکەرێک دەچێتە ناو وێبسایتەکەتەوە، تەنها چەند چرکەیەکی کەمت هەیە بۆ ئەوەی سەرنجی ڕابکێشیت. دیزاینی ڕووی پێشەوە (Front-end) وەک ڕوخساری پڕۆژەکەت وایە؛ ئەگەر خێرا، ڕێک و ئاسوودەبێت بۆ چاو، سەردانیکەرەکە دەمێنێتەوە. ئێمە لە پەیڤکۆد گرنگییەکی تایبەت بە وردەکارییەکانی UI/UX دەدەین بۆ ئەوەی بەکارهێنەر ئەزموونێکی ناوازەی هەبێت."
       ],
       ar: [
-        "١. لا تترجم كلمة بكلمة، ترجم المعنى: النصوص التقنية غالباً ما تستخدم جملاً قصيرة ومباشرة. الترجمة الحرفية غالباً ما تنتج نصاً صحيحاً نحوياً لكنه بارد وغريب من الناحية المهنية.",
-        "٢. اترك للمصطلحات التقنية مكانها: بعض الكلمات (مثل 'API'، 'server') من الأفضل إبقاؤها كما هي أو استبدالها بمصطلح معياري في اللغة الهدف -- لا بترجمة حرفية لا يفهمها أحد.",
-        "٣. حافظ على نبرة النص: النص التقني أحياناً رسمي وأحياناً ودّي. عند نقله من لغة إلى أخرى، يجب الحفاظ على نفس درجة الرسمية أو القرب.",
-        "٤. اكتب للمستخدم النهائي، لا لنفسك: أحياناً يكون المترجم خبيراً في مجاله ويضيف تفاصيل زائدة لا يحتاجها المستخدم. اجعل النص مناسباً لمستوى القارئ.",
-        "٥. أعد القراءة دون النص الأصلي: الخطوة الأخيرة هي قراءة النص المترجم وكأنه نص أصلي، دون النظر إلى النص المصدر. إذا كان واضحاً وطبيعياً بذاته، فالترجمة نجحت."
+        "عندما يدخل زائر إلى موقعك الإلكتروني، لا يكون أمامك سوى بضع ثوانٍ قليلة لجذب انتباهه. تصميم الواجهة الأمامية (Front-end) هو بمثابة وجه مشروعك؛ فإذا كان سريعاً ومرتباً ومريحاً للعين، سيبقى الزائر. نولي في بيڤكود اهتماماً خاصاً بتفاصيل تجربة وواجهة المستخدم (UI/UX) لضمان حصول المستخدم على تجربة مميزة."
       ],
       en: [
-        "1. Don't translate word for word -- translate meaning: technical text tends to use short, direct sentences. A literal translation often produces something grammatically correct but professionally cold and foreign-sounding.",
-        "2. Let technical terms keep their place: some words (like 'API', 'server') are often best left as-is, or swapped for a standard term in the target language -- not a literal translation nobody recognizes.",
-        "3. Preserve the tone: technical writing is sometimes formal, sometimes friendly. When moving between languages, that same level of formality needs to carry over.",
-        "4. Write for the end user, not for yourself: translators are often domain experts and may add extra detail the reader doesn't actually need. Match the text to the reader's level.",
-        "5. Re-read it without the source text: the final step is reading the translation as if it were an original piece of writing, without glancing at the source. If it reads clearly and naturally on its own, the translation has done its job."
+        "When a visitor lands on your website, you have only a few seconds to catch their attention. Front-end design is the face of your project; if it's fast, clean, and easy on the eyes, visitors stay. At PeyvCode, we pay special attention to UI/UX details so users get a genuinely distinctive experience."
       ]
     }
   },
   {
     id: 3,
-    date: { ku: "٩ی تەممووزی ٢٠٢٦", ar: "9 يوليو 2026", en: "Jul 9, 2026" },
-    tag:  { ku: "ڕووکار", ar: "الواجهات", en: "Interfaces" },
+    image: "Blag3.png",
+    date: { ku: "١ی ئایلولی ٢٠٢٦", ar: "1 سبتمبر 2026", en: "Sep 1, 2026" },
+    tag:  { ku: "هاوکاری", ar: "التعاون", en: "Collaboration" },
     title: {
-      ku: "دیزاینکردنی ڕووکار بۆ زمانی ڕاست-بۆ-چەپ",
-      ar: "تصميم الواجهات للغات من اليمين إلى اليسار",
-      en: "Designing Interfaces for Right-to-Left Languages"
+      ku: "چۆن دەتوانین هاوکاری پڕۆژە دیجیتاڵییەکانتان بکەین؟",
+      ar: "كيف يمكننا مساعدتكم في مشاريعكم الرقمية؟",
+      en: "How Can We Help With Your Digital Projects?"
     },
     excerpt: {
-      ku: "خاڵە گرنگەکان کاتێک ڕووکارێک دادەڕێژیت کە دەبێت بە کوردی و عەرەبیش کار بکات.",
-      ar: "النقاط المهمة عند تصميم واجهة يجب أن تعمل بالكردية والعربية أيضاً.",
-      en: "The key considerations when a UI must also work flawlessly in Kurdish and Arabic."
+      ku: "لە بیرۆکەیەکی سادەوە بۆ بەرهەمێکی تەواو؛ چۆنیەتی هاوکاریکردنمان لەگەڵ کڕیارەکانمان لە پڕۆژە دیجیتاڵییەکاندا.",
+      ar: "من فكرة بسيطة إلى منتج متكامل؛ كيف نتعاون مع عملائنا في المشاريع الرقمية.",
+      en: "From a simple idea to a finished product -- how we collaborate with our clients on digital projects."
     },
     content: {
       ku: [
-        "زۆر دیزاینەر کە فێری کاتی خۆی لەگەڵ ڕووکاری ئینگلیزی بووە، کاتێک یەکەم جار دەست بە پڕۆژەیەکی کوردی یان عەرەبی دەکات، هەست بە سەرلێشێواوی دەکات. هۆکارەکە ئاسانە: هەموو شتێک -- لە ئایکۆنی پەڕگرتنەوە بگرە تا شوێنی دوگمە -- دەبێت لە ئاوێنەدا ببینرێتەوە.",
-        "یەکەم شت کە دەبێت لەبیرت بێت: 'ڕاست-بۆ-چەپ' تەنها گۆڕینی ئاراستەی دەق نییە. ئایکۆنی 'گەڕانەوە' کە لە ئینگلیزیدا بەرەو چەپ ئاراستە دەکات، لە کورددا دەبێت بەرەو ڕاست بێت. هەروەها شوێنی مینیو، شریتی پێشکەوتن، تەنانەت شوێنی نۆتیفیکەیشنیش دەگۆڕێت.",
-        "خاڵی دووەم: تایپۆگرافیا. فۆنتی کوردی و عەرەبی پێویستی بە بەرزیی دێڕی جیاوازە لەگەڵ فۆنتی لاتینی، چونکە پیتەکان شێوازی جیاوازیان هەیە. ئەگەر هەمان بەرزیی دێڕی فۆنتی ئینگلیزی بەکاربهێنیت، دەقەکە پرچەکراو یان تەنگ دەردەکەوێت.",
-        "خاڵی سێیەم: تاقیکردنەوە. بەشێوەیەکی ڕاستەقینە، دیزاینێکی RTL تەنها بە گۆڕینی ڕووکارێکی LTR دروست نابێت -- پێویستە لە سەرەتاوە بە بیرکردنەوەی ڕاست-بۆ-چەپ داڕێژرێت، دواتر بۆ ئینگلیزیش بگونجێنرێت، نەک پێچەوانەکەی.",
-        "لە پەیڤکۆددا، ئێمە هەمیشە پرۆژە بە زمانی ڕەسەنەکەیەوە دەست پێدەکەین -- بۆ زۆربەی کڕیارەکانمان کوردی -- پاشان بۆ زمانەکانی تر فراوانی دەکەین. ئەم شێوازە یارمەتیدەرە بۆ ئەوەی هەستی 'وەرگێڕدراو' نەدات، بەڵکو هەست بکرێت بۆ هەر زمانێک بە تایبەتی دیزاین کراوە."
+        "لە بیرۆکەوە بۆ جێبەجێکردن؛ گەشتەکە لێرە دەست پێدەکات.",
+        "هەموو کارە گەورەکان لە بیرۆکەیەکی بچووکەوە دەست پێدەکەن، بەڵام جیاوازییەکە لە چۆنیەتی گەیاندنی ئەو بیرۆکەیە بە جیهانی ڕاستەقینە دەبێت. لە پەیڤکۆد دا، ئێمە ئامادەین هاوکارت دەبن لە دروستکردنی وێبسایتی کەسی، سیستەمی کاروباری، و خزمەتگوزارییە دیجیتاڵییەکاندا. تەنها پێویستە بیرۆکەکەت بڵێیت و ئێمە کارە تەکنیکییەکان، ئەنجام بدەین."
       ],
       ar: [
-        "كثير من المصممين الذين اعتادوا العمل مع واجهات إنجليزية يشعرون بالارتباك عند بدء أول مشروع كردي أو عربي. السبب بسيط: كل شيء -- من أيقونة الرجوع إلى موقع الأزرار -- يجب أن يُرى في المرآة.",
-        "أول ما يجب تذكره: 'من اليمين إلى اليسار' ليس مجرد تغيير اتجاه النص. أيقونة 'الرجوع' التي تشير يساراً في الإنجليزية يجب أن تشير يميناً في الكردية. كذلك يتغيّر موقع القائمة، شريط التقدّم، وحتى موقع الإشعارات.",
-        "النقطة الثانية: الطباعة (Typography). الخطوط الكردية والعربية تحتاج ارتفاع سطر مختلف عن الخطوط اللاتينية، لأن شكل الحروف مختلف. استخدام نفس ارتفاع سطر الخط الإنجليزي يجعل النص متكدساً أو ضيقاً.",
-        "النقطة الثالثة: الاختبار. تصميم RTL حقيقي لا يُبنى بمجرد قلب واجهة LTR -- يجب تصميمه من الأساس بمنطق اليمين إلى اليسار، ثم يُكيَّف لاحقاً للإنجليزية، لا العكس.",
-        "في بيڤكود، نبدأ دائماً بالمشروع بلغته الأصلية -- الكردية غالباً لعملائنا -- ثم نوسّعه للغات أخرى. هذا الأسلوب يساعد على ألا يبدو الأمر 'مترجماً'، بل مصمماً خصيصاً لكل لغة."
+        "من الفكرة إلى التنفيذ؛ الرحلة تبدأ من هنا.",
+        "كل الأعمال الكبيرة تبدأ من فكرة صغيرة، لكن الفرق الحقيقي يكمن في كيفية إيصال تلك الفكرة إلى العالم الواقعي. في بيڤكود، نحن مستعدون لمساعدتك في إنشاء موقعك الشخصي، أو نظامك التجاري، أو خدماتك الرقمية. كل ما عليك فعله هو أن تخبرنا بفكرتك، وسنتولى نحن الجانب التقني."
       ],
       en: [
-        "Many designers who've spent their careers on English interfaces feel disoriented the first time they take on a Kurdish or Arabic project. The reason is simple: everything -- from the back-arrow icon to where buttons sit -- has to be seen as if in a mirror.",
-        "The first thing to remember: right-to-left isn't just flipping text direction. A 'back' icon that points left in English needs to point right in Kurdish. The same goes for menu placement, progress bars, and even where notifications appear.",
-        "Second: typography. Kurdish and Arabic fonts need different line heights than Latin fonts, because the letterforms behave differently. Reuse an English font's line height and the text ends up cramped or overlapping.",
-        "Third: testing. A genuine RTL design isn't built by flipping an LTR layout -- it has to be designed from the ground up with right-to-left logic, then adapted for English afterward, not the other way around.",
-        "At PeyvCode, we always start a project in its native language -- Kurdish, for most of our clients -- then expand outward to other languages. That approach keeps things from feeling 'translated' and instead makes each language feel purpose-built."
-      ]
-    }
-  },
-  {
-    id: 4,
-    date: { ku: "٢٢ی حوزەیرانی ٢٠٢٦", ar: "22 يونيو 2026", en: "Jun 22, 2026" },
-    tag:  { ku: "کۆپیرایتینگ", ar: "الكتابة الإعلانية", en: "Copywriting" },
-    title: {
-      ku: "دەق چۆن دەبێتە بەشێک لە بەرهەم",
-      ar: "كيف يصبح النص جزءاً من المنتج",
-      en: "How Copy Becomes Part of the Product"
-    },
-    excerpt: {
-      ku: "دەق تەنها ڕازاندنەوە نییە، بەشێکە لە ئەزموونی بەکارهێنەر -- نموونە لە پڕۆژەکانمان.",
-      ar: "النص ليس مجرد زخرفة، بل جزء من تجربة المستخدم -- أمثلة من مشاريعنا.",
-      en: "Copy isn't decoration -- it's part of the user experience. Examples from our projects."
-    },
-    content: {
-      ku: [
-        "زۆر خاوەن پڕۆژە بیر لەوە دەکەنەوە کە دەق -- نووسینی نێو دوگمە، پەیامی هەڵە، ڕێنماییەکان -- شتێکی کۆتاییە کە دوای تەواوبوونی دیزاین و کۆد زیاد دەکرێت. بەڵام لە ڕاستیدا، دەق یەکێکە لە کاریگەرترین بەشەکانی ئەزموونی بەکارهێنەر.",
-        "وەرە بیر لەوە بکەرەوە: دوگمەیەک کە تیایدا نووسراوە 'ناردن' لەگەڵ دوگمەیەک کە تیایدا نووسراوە 'با پەیامەکەت بنێرین'، هەردووکیان کارێکی یەکسان دەکەن، بەڵام هەستی جیاواز بە بەکارهێنەر دەدەن. یەکەمیان ڕەسمییە و سارد، دووەمیان گەرم و نزیکە لە بەکارهێنەر.",
-        "لە پڕۆژەکانمان، جارێک کڕیارێکمان هەبوو کە ڕێژەی وازهێنانی بەکارهێنەران لە فۆرمێکی تۆمارکردندا بەرز بوو. کاتێک وردبووینەوە، کێشەکە لە دیزایندا نەبوو، بەڵکو لە دەقی هەڵەکاندا بوو: 'خەتای ٤٠٤' بۆ کەسێکی ئاسایی هیچ مانایەکی نییە. کاتێک گۆڕامانە بۆ 'ئیمەیڵەکەت هەڵەیە، تکایە دووبارە بینووسەرەوە'، ڕێژەی تەواوکردنی فۆرمەکە بەرزبووەوە.",
-        "ئەمە بۆچی گرنگە بۆ ئێمە: کۆپیرایتینگ تەنها لە بەشی بازاڕگەری نییە. دەبێت لە یەکەم ڕۆژی دیزاینی ڕووکارەوە بەشدار بێت، هاوکات لەگەڵ تیمی تەکنیکی، نەک وەک هەنگاوی کۆتایی.",
-        "لەبەرئەوەی پەیڤکۆد لە یەک ستۆدیۆدا لایەنی تەکنیکی و لایەنی زمانەوانی کۆدەکاتەوە، دەقی هەر پرۆژەیەک لە هەمان کاتدا لەگەڵ کۆدەکەی گەشە دەکات -- نەک دوای تەواوبوونی."
-      ],
-      ar: [
-        "كثير من أصحاب المشاريع يعتقدون أن النص -- كلمات الأزرار، رسائل الخطأ، الإرشادات -- أمر أخير يُضاف بعد اكتمال التصميم والبرمجة. لكن في الواقع، النص من أكثر أجزاء تجربة المستخدم تأثيراً.",
-        "فكّر في الأمر: زر كُتب عليه 'إرسال' مقابل زر كُتب عليه 'لنرسل رسالتك'، كلاهما يقوم بنفس الوظيفة، لكنهما يمنحان المستخدم شعوراً مختلفاً تماماً. الأول رسمي وبارد، والثاني دافئ وقريب من المستخدم.",
-        "في أحد مشاريعنا، كان لدى عميل معدل تسرّب مرتفع في نموذج تسجيل. عند التدقيق، لم تكن المشكلة في التصميم، بل في نصوص الأخطاء: 'خطأ 404' لا يعني شيئاً لشخص عادي. عندما غيّرناها إلى 'بريدك الإلكتروني غير صحيح، الرجاء إعادة كتابته'، ارتفع معدل إتمام النموذج بشكل ملحوظ.",
-        "هذا سبب أهمية الأمر بالنسبة لنا: الكتابة الإعلانية ليست حكراً على قسم التسويق. يجب أن تكون حاضرة منذ اليوم الأول لتصميم الواجهة، جنباً إلى جنب مع الفريق التقني، لا كخطوة أخيرة.",
-        "ولأن بيڤكود يجمع الجانب التقني واللغوي في استوديو واحد، فإن نص كل مشروع ينمو مع الكود في نفس الوقت -- لا بعد اكتماله."
-      ],
-      en: [
-        "Many project owners think of copy -- button labels, error messages, guidance text -- as something added at the end, after design and code are finished. In reality, copy is one of the most influential parts of the user experience.",
-        "Consider this: a button labeled 'Submit' versus one labeled 'Let's send your message' -- both do the same thing, but they leave the user with a completely different feeling. One is formal and cold; the other is warm and personal.",
-        "In one of our projects, a client had a high drop-off rate on a signup form. When we dug in, the problem wasn't the design -- it was the error copy. 'Error 404' means nothing to an ordinary user. Once we changed it to 'That email doesn't look right, please try again,' form completion rates rose noticeably.",
-        "That's why this matters to us: copywriting isn't just marketing's job. It needs to be in the room from day one of interface design, working alongside the technical team, not tacked on as a final step.",
-        "Because PeyvCode brings the technical and linguistic sides together in one studio, every project's copy grows alongside its code at the same time -- not after it."
+        "From idea to execution; the journey starts here.",
+        "Every great venture starts from a small idea, but the real difference lies in how that idea is delivered to the real world. At PeyvCode, we're ready to help you build your personal website, business system, or digital services. All you need to do is share your idea, and we'll handle the technical work."
       ]
     }
   }
@@ -811,16 +792,22 @@ let currentLang = "ku";
 function renderBlog(lang){
   const grid = document.getElementById("blogGrid");
   grid.innerHTML = BLOG_POSTS.map(post => `
-    <article class="blog-card rounded-xl p-6 flex flex-col">
-      <div class="flex items-center justify-between mb-4 text-xs font-mono text-fog">
-        <span>${post.date[lang]}</span>
-        <span class="text-amber border border-amber/30 rounded-full px-2 py-0.5">${post.tag[lang]}</span>
+    <article class="blog-card rounded-xl overflow-hidden flex flex-col">
+      <div class="blog-img-frame">
+        <img src="${post.image}" alt="${post.title[lang]}" loading="lazy">
+        <div class="blog-img-overlay"></div>
+        <span class="blog-img-corner tl"></span>
+        <span class="blog-img-corner br"></span>
+        <span class="blog-img-tag text-amber text-[11px] font-mono border border-amber/30 rounded-full px-2.5 py-1">${post.tag[lang]}</span>
+        <span class="blog-img-date text-fog text-[11px] font-mono rounded-full px-2 py-0.5">${post.date[lang]}</span>
       </div>
-      <h3 class="font-disp font-bold text-bone text-base mb-2 leading-snug">${post.title[lang]}</h3>
-      <p class="text-sm text-fog mb-5 flex-1">${post.excerpt[lang]}</p>
-      <button type="button" class="read-more-btn text-xs font-semibold text-gold inline-flex items-center gap-1 cursor-pointer w-fit hover:text-amber transition" data-id="${post.id}">
-        ${LANG_META[lang].readMore} →
-      </button>
+      <div class="p-6 flex flex-col flex-1">
+        <h3 class="font-disp font-bold text-bone text-base mb-2 leading-snug">${post.title[lang]}</h3>
+        <p class="text-sm text-fog mb-5 flex-1">${post.excerpt[lang]}</p>
+        <button type="button" class="read-more-btn text-xs font-semibold text-gold inline-flex items-center gap-1 cursor-pointer w-fit hover:text-amber transition" data-id="${post.id}">
+          ${LANG_META[lang].readMore} →
+        </button>
+      </div>
     </article>
   `).join("");
 
@@ -838,6 +825,8 @@ function openArticle(id){
   if (!post) return;
   const lang = currentLang;
 
+  document.getElementById("articleImage").src = post.image;
+  document.getElementById("articleImage").alt = post.title[lang];
   document.getElementById("articleDate").textContent = post.date[lang];
   document.getElementById("articleTag").textContent = post.tag[lang];
   document.getElementById("articleTitle").textContent = post.title[lang];
