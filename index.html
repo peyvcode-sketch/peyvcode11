@@ -129,11 +129,27 @@
   .wa-btn:hover{ transform: translateY(-3px); }
 
   .blog-card{
-    background: rgba(18,24,33,0.6);
-    border: 1px solid rgba(201,162,75,0.10);
-    transition: border-color .3s ease, transform .3s ease, box-shadow .3s ease;
+    background: linear-gradient(180deg, rgba(24,31,42,0.7), rgba(15,20,28,0.7));
+    border: 1px solid rgba(201,162,75,0.12);
+    box-shadow: 0 16px 34px -22px rgba(0,0,0,0.7);
+    transition: border-color .35s ease, transform .35s ease, box-shadow .35s ease;
+    position: relative;
   }
-  .blog-card:hover{ border-color: rgba(201,162,75,0.4); transform: translateY(-4px); box-shadow: 0 24px 48px -20px rgba(0,0,0,0.65); }
+  .blog-card::before{
+    content:"";
+    position:absolute; inset:0;
+    border-radius: inherit;
+    padding:1px;
+    background: linear-gradient(155deg, rgba(201,162,75,0.35), rgba(201,162,75,0) 30%, rgba(91,155,176,0) 70%, rgba(91,155,176,0.22));
+    -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    opacity:.55;
+    pointer-events:none;
+    transition: opacity .35s ease;
+  }
+  .blog-card:hover{ border-color: rgba(201,162,75,0.5); transform: translateY(-5px); box-shadow: 0 30px 56px -22px rgba(0,0,0,0.7), 0 0 0 1px rgba(201,162,75,0.08); }
+  .blog-card:hover::before{ opacity: 1; }
 
   .blog-img-frame{
     position: relative;
@@ -141,37 +157,45 @@
     overflow: hidden;
     background: #0D1319;
     border-radius: 0.75rem 0.75rem 0 0;
-    box-shadow: inset 0 0 0 1px rgba(201,162,75,0.08), 0 18px 32px -18px rgba(0,0,0,0.55);
+    box-shadow: inset 0 0 0 1px rgba(201,162,75,0.1), 0 18px 32px -18px rgba(0,0,0,0.6);
   }
   .blog-img-frame img{
     display:block;
     width: 100%; height: 100%; object-fit: cover; object-position: center;
-    transition: transform .7s cubic-bezier(.16,1,.3,1), filter .5s ease;
-    filter: saturate(1.05);
+    transition: transform .8s cubic-bezier(.16,1,.3,1), filter .5s ease;
+    filter: saturate(1.08) contrast(1.03);
   }
-  .blog-card:hover .blog-img-frame img{ transform: scale(1.08); }
+  .blog-card:hover .blog-img-frame img{ transform: scale(1.09); filter: saturate(1.16) contrast(1.05); }
   .blog-img-frame .blog-img-overlay{
     position:absolute; inset:0;
-    background: linear-gradient(180deg, rgba(11,15,20,0) 45%, rgba(11,15,20,0.92) 100%);
+    background: linear-gradient(180deg, rgba(11,15,20,0) 40%, rgba(11,15,20,0.55) 78%, rgba(11,15,20,0.94) 100%);
+    pointer-events:none;
+  }
+  .blog-img-frame .blog-img-sheen{
+    position:absolute; inset:0;
+    background: linear-gradient(135deg, rgba(201,162,75,0.14) 0%, transparent 32%);
+    mix-blend-mode: overlay;
+    opacity:.8;
     pointer-events:none;
   }
   .blog-img-frame .blog-img-corner{
-    position:absolute; width:18px; height:18px;
-    border-color:#C9A24B; opacity:.75; pointer-events:none;
+    position:absolute; width:16px; height:16px;
+    border-color:#C9A24B; opacity:.6; pointer-events:none;
     transition: opacity .3s ease, width .3s ease, height .3s ease;
   }
-  .blog-card:hover .blog-img-frame .blog-img-corner{ width:24px; height:24px; opacity:1; }
-  .blog-img-corner.tl{ top:10px; inset-inline-start:10px; border-top:2px solid; border-inline-start:2px solid; border-start-start-radius:6px; }
-  .blog-img-corner.br{ bottom:10px; inset-inline-end:10px; border-bottom:2px solid; border-inline-end:2px solid; border-end-end-radius:6px; }
+  .blog-card:hover .blog-img-frame .blog-img-corner{ width:26px; height:26px; opacity:1; }
+  .blog-img-corner.tl{ top:10px; inset-inline-start:10px; border-top:1.5px solid; border-inline-start:1.5px solid; border-start-start-radius:6px; }
+  .blog-img-corner.br{ bottom:10px; inset-inline-end:10px; border-bottom:1.5px solid; border-inline-end:1.5px solid; border-end-end-radius:6px; }
   .blog-img-tag{
     position:absolute; top:12px; inset-inline-start:12px;
-    backdrop-filter: blur(6px);
-    background: rgba(11,15,20,0.55);
+    backdrop-filter: blur(8px);
+    background: rgba(11,15,20,0.6);
+    box-shadow: 0 4px 14px -6px rgba(0,0,0,0.6);
   }
   .blog-img-date{
     position:absolute; bottom:12px; inset-inline-end:12px;
-    backdrop-filter: blur(6px);
-    background: rgba(11,15,20,0.55);
+    backdrop-filter: blur(8px);
+    background: rgba(11,15,20,0.5);
   }
   .article-img-frame{
     position:relative; overflow:hidden; border-radius:0.75rem;
@@ -701,6 +725,48 @@
 ===================================================================== */
 const BLOG_POSTS = [
   {
+    id: 4,
+    image: "Blag4.png",
+    date: { ku: "٣ی ئایلولی ٢٠٢٦", ar: "3 سبتمبر 2026", en: "3 Sep 2026" },
+    tag:  { ku: "زمانەوانی و کۆد", ar: "اللسانيات والبرمجة", en: "Linguistics & Code" },
+    title: {
+      ku: "مێشکی ماشین و زمانی مرۆڤ؛ چۆن مۆدێلە زمانەوانییەکان کۆدیان کردە شیعر و لۆژیک؟",
+      ar: "عقل الآلة وبشريّة اللغة؛ كيف حوّلت النماذج اللغويّة الكود إلى شعر ومنطق؟",
+      en: "The Machine's Mind and Human Language: How Linguistic Models Turned Code into Logic and Poetry"
+    },
+    excerpt: {
+      ku: "پەیوەندی نێوان زمانەوانی و کۆدنووسین دەکۆڵینەوە و ڕوونی دەکاتەوە چۆن مۆدێلە زمانەوانییە گەورەکان بیرکردنەوەی زمان دەگۆڕن بۆ لۆژیکی کۆد.",
+      ar: "نستكشف العلاقة العميقة بين اللسانيات والبرمجة، ونوضّح كيف حوّلت النماذج اللغوية الكبيرة التفكير اللغوي إلى منطق برمجي دقيق.",
+      en: "Exploring the deep link between linguistics and code -- how Large Language Models turn linguistic reasoning into precise programming logic."
+    },
+    content: {
+      ku: [
+        "لە سەردەمی ئێستای پێشکەوتنی تەکنۆلۆژیادا، سنووری نێوان زمانەوانی و زانستی کۆمپیوتەر ڕۆژ بە ڕۆژ کاڵتر دەبێتەوە. کاتێک سەیری گەشەی سیستمەکانی ژیریی دەستکرد و پەرەپێدانی مۆدێلە زمانەوانییە گەورەکان (LLMs) دەکەین، بۆمان دەردەکەوێت کە کۆد و زمان دوو ڕووی یەک سکەن؛ زمان سیستمی بیرکردنەوەیە و کۆدیش زمانێکی فەرمییە بۆ جێبەجێکردنی ئەو بیرکردنەوەیە.",
+        "لە پڕۆژەی (پەیڤکۆد)دا، تێگەیشتنی قووڵمان بۆ ئەم تێکەڵبوونە لەسەر چەند بنەمایەکی زانستیی نوێ بنیاد نراوە:",
+        "<strong class=\"text-bone\">تۆپۆلۆژیای زمان و پێکهاتەی داتابەیس:</strong> هەروەک چۆن وشەکان لە ڕستەیەکدا تۆڕێکی واتایی (<span dir=\"ltr\">Semantic Network</span>) دروست دەکەن، لە جیهانی پرۆگرامسازیشدا داتابەیس و پەیوەندی نێوان خشتەکان (<span dir=\"ltr\">Relational Databases</span>) بە هەمان لۆژیکی ڕستەسازی و ڕێزمانی دادەمەزرێن. لێرەدا زمانەوانی کلیلی دروستکردنی پەیوەندییە لە نێوان داتادا.",
+        "<strong class=\"text-bone\">پرۆسێسکردنی زمانی سروشتی (<span dir=\"ltr\">NLP</span>) و پەرەپێدان:</strong> بۆ ئەوەی ماشینێک بتوانێت لە داواکارییەکانی مرۆڤ تێبگات، پێویستی بە شیکاری مورفۆلۆژی و سینتاکسی هەیە. ئەمەش واتە کۆدەر پێویستە پێش ئەوەی ببێتە پرۆگرامسازێکی سەرکەوتوو، شارەزایەکی باشی لە بنەماکانی ڕستەسازی و داڕشتنی زاراوەکان هەبێت.",
+        "<strong class=\"text-bone\">دایالۆگ لە نێوان مرۆڤ و ماشین:</strong> داهاتووی وێبسایت و سەکۆ دیجیتاڵییەکان تەنها پەیوەست نابێت بە کلیککردن، بەڵکو پشت بە گفتوگۆ و تێگەیشتنی زمانەوانی دەبەستێت (<span dir=\"ltr\">Conversational UIs</span>). لێرەدا پەیڤکۆد ئامانجێکی گەورەتری هەیە؛ ئەویش دروستکردنی پردێکە بۆ تێکەڵکردنی ڕەوانبێژی زمان لەگەڵ خێرایی و وردی کۆددا.",
+        "ئامانجی ئێمە لێرەدا تەنها دروستکردنی وێبسایت نییە، بەڵکو دروستکردنی تێگەیشتنێکی فیکری و تەکنیکییە کە نیشانی بدات چۆن زمان دەتوانێت ببێتە بزوێنەری داهاتووی سیستمە دیجیتاڵییەکان."
+      ],
+      ar: [
+        "في عصرنا الرقمي الحالي، تتلاشى الحدود الفاصلة بين علم اللغويات وعلوم الكمبيوتر يوماً بعد يوم. وحين نتأمل التطور المتسارع لأنظمة الذكاء الاصطناعي والنماذج اللغوية الكبيرة (<span dir=\"ltr\">LLMs</span>)، يتضح جلياً أن الكود واللغة هما وجهان لعملة واحدة؛ فاللغة نظام تفكير متكامل، والكود هو الصيغة الرسمية لتنفيذ هذا الفكر بدقة.",
+        "في مشروع (<span dir=\"ltr\">PeyvCode</span>)، يستند فهمنا العميق لهذا التداخل على ركائز علمية حديثة:",
+        "<strong class=\"text-bone\">طوبولوجيا اللغة وبنية قواعد البيانات:</strong> تماماً كما تشكل الكلمات شبكة دلالية متكاملة (<span dir=\"ltr\">Semantic Network</span>) داخل الجملة، تُبنى قواعد البيانات وعلاقات الجداول (<span dir=\"ltr\">Relational Databases</span>) في عالم البرمجة وفقاً لذات منطق النحو والصياغة. وهنا تكمن اللسانيات كأداة رئيسية لتأسيس الروابط الدقيقة داخل البيانات.",
+        "<strong class=\"text-bone\">معالجة اللغات الطبيعية (<span dir=\"ltr\">NLP</span>) والتطوير البرمجي:</strong> لكي تتمكن الآلة من استيعاب متطلبات البشر، فإنها تتطلب تحليلاً صرفياً ونحوياً دقيقاً. هذا يعني أن المبرمج الناجح يجب أن يمتلك -- قبل كل شيء -- إدراكاً عميقاً بقواعد الصياغة وتوظيف المصطلحات.",
+        "<strong class=\"text-bone\">الحوار بين الإنسان والآلة:</strong> لا يقتصر مستقبل المنصات الرقمية على النقرات التقليدية فحسب، بل يعتمد على الحوار والتفاعل اللغوي (<span dir=\"ltr\">Conversational UIs</span>). وهنا يحمل (<span dir=\"ltr\">PeyvCode</span>) رؤية أوسع تتمثل في بناء جسر يربط بلاغة اللغة بمرونة وسرعة الكود البرمجي.",
+        "هدفنا في (<span dir=\"ltr\">PeyvCode</span>) ليس مجرد بناء مواقع إلكترونية، بل صياغة وعي فكري وتقني يبرز كيف يمكن للغة أن تكون المحرك الأساسي لأنظمة المستقبل الرقمية."
+      ],
+      en: [
+        "In today's digital era, the boundaries separating linguistics and computer science are fading day by day. When we examine the rapid evolution of artificial intelligence systems and Large Language Models (LLMs), it becomes evident that code and language are two sides of the same coin; language is a complete system of thought, and code is the formal syntax execution of that thought.",
+        "At PeyvCode, our deep understanding of this convergence is rooted in modern scientific principles:",
+        "<strong class=\"text-bone\">Language Topology and Database Architecture:</strong> Just as words form an integrated Semantic Network within a sentence, databases and table relationships (Relational Databases) in the programming world are structured upon the exact same logic of grammar and syntax. Here, linguistics serves as the ultimate tool for establishing precise relationships within data.",
+        "<strong class=\"text-bone\">Natural Language Processing (NLP) and Development:</strong> For a machine to comprehend human intent, it requires profound morphological and syntactic analysis. This implies that a successful programmer must first possess a solid foundation in structural phrasing and terminology.",
+        "<strong class=\"text-bone\">Human-Machine Dialogue:</strong> The future of digital platforms is not confined to traditional clicks; rather, it relies on conversation and linguistic interaction (Conversational UIs). Here, PeyvCode holds a broader vision: building a bridge that fuses the eloquence of language with the speed and precision of code.",
+        "Our objective at PeyvCode goes beyond building websites; it is about shaping an intellectual and technical awareness that highlights how language can serve as the primary engine for future digital systems."
+      ]
+    }
+  },
+  {
     id: 1,
     image: "Blag1.jpg",
     date: { ku: "١ی ئایلولی ٢٠٢٦", ar: "1 سبتمبر 2026", en: "1 Sep 2026" },
@@ -803,6 +869,7 @@ function renderBlog(lang){
     <article class="blog-card rounded-xl overflow-hidden flex flex-col">
       <div class="blog-img-frame">
         <img src="${post.image}" alt="${post.title[lang]}" loading="lazy">
+        <div class="blog-img-sheen"></div>
         <div class="blog-img-overlay"></div>
         <span class="blog-img-corner tl"></span>
         <span class="blog-img-corner br"></span>
@@ -811,9 +878,9 @@ function renderBlog(lang){
       </div>
       <div class="p-6 flex flex-col flex-1">
         <h3 class="font-disp font-bold text-bone text-base mb-2 leading-snug">${post.title[lang]}</h3>
-        <p class="text-sm text-fog mb-5 flex-1">${post.excerpt[lang]}</p>
-        <button type="button" class="read-more-btn text-xs font-semibold text-gold inline-flex items-center gap-1 cursor-pointer w-fit hover:text-amber transition" data-id="${post.id}">
-          ${LANG_META[lang].readMore} →
+        <p class="text-sm text-fog mb-5 flex-1 leading-relaxed">${post.excerpt[lang]}</p>
+        <button type="button" class="read-more-btn text-xs font-semibold text-gold inline-flex items-center gap-1.5 cursor-pointer w-fit hover:text-amber hover:gap-2.5 transition-all" data-id="${post.id}">
+          ${LANG_META[lang].readMore} <span aria-hidden="true">→</span>
         </button>
       </div>
     </article>
