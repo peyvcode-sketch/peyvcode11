@@ -725,6 +725,48 @@
 ===================================================================== */
 const BLOG_POSTS = [
   {
+    id: 5,
+    image: "Blag5.png",
+    date: { ku: "٤ی ئایلولی ٢٠٢٦", ar: "4 سبتمبر 2026", en: "4 Sep 2026" },
+    tag:  { ku: "تیۆری یاری", ar: "نظرية الألعاب", en: "Game Theory" },
+    title: {
+      ku: "ماتماتیکی بڕیار؛ چۆن (Game Theory) زمانەوانی و پرۆگرامسازی پێکەوە دەبەستێتەوە؟",
+      ar: "رياضيات القرار؛ كيف تربط (نظرية الألعاب) بين علم اللغويات والبرمجة؟",
+      en: "The Mathematics of Decision: How Game Theory Connects Linguistics and Programming"
+    },
+    excerpt: {
+      ku: "زمان و کۆد وەک یاریی ستراتیژین؛ چۆن هاوسەنگیی ناش لۆژیکی دەق و پرۆگرام یەک دەخات.",
+      ar: "اللغة والكود كلعبة استراتيجية؛ كيف يوازن توازن ناش بين منطق النص والبرمجة.",
+      en: "Language and code as a strategic game -- how Nash Equilibrium balances the logic of text and programming."
+    },
+    content: {
+      ku: [
+        "لە زانستی مۆدێرندا، پەیوەندی نێوان مرۆڤ و ماشین تەنها پەیوەندییەکی ڕێنووسی یان ماتماتیکی سادە نییە، بەڵکو جۆرێکە لە \"یاریی ستراتیژی\" (<span dir=\"ltr\">Strategic Game</span>)؛ لێرەدا وشەکان لە زمانەوانیدا و دێڕە کۆدەکان لە پرۆگرامسازیدا، هەردوکیان وەک بژاردە یان \"جووڵە\" کار دەکەن بۆ گەیشتن بە باشترین ئامانج بە کەمترین تێچوو.",
+        "لە پڕۆژەی (پەیڤکۆد)دا، تێگەیشتنی ئێمە بۆ ئەم تێکەڵبوونە نوێیە لەسەر چەند بنەمایەکی داهێنەرانە بنیاد نراوە:",
+        "<strong class=\"text-bone\">هاوسەنگیی ناش لە زمان و کۆد (<span dir=\"ltr\">Nash Equilibrium</span>):</strong> هەروەک چۆن لە تیۆری کایەکاندا هەردوو لایەن هەوڵ دەدن باشترین بڕیار بدەن بەبێ ئەوەی یەکێکیان زیان بکات، لە داڕشتنی سیستمی کۆد و نووسینی دەقیشدا، پێویستە زمانەوانی و لۆژیکی تەکنیکی بگەنە ئاستێکی هاوسەنگیی ڕەها، بۆ ئەوەی نە بارهەڵگری کۆدەکە قورس بێت و نە مانای پەیامەکە تەمومژاوی دەرکەوێت.",
+        "<strong class=\"text-bone\">ڕستەسازی وەک فەرمانی مەرجدار (<span dir=\"ltr\">Conditional Syntax</span>):</strong> لە زمانە سروشتییەکاندا (وەک کوردی و ئینگلیزی)، مەرجەکان و لێکدانی ڕستەکان زۆر جار پشت بە حاڵەت دەبەستن (<span dir=\"ltr\">If-Then</span>)، کە ئەمە ڕێک هەمان لۆژیکی داڕشتنی مەرجەکانە لە زمانەکانی پرۆگرامسازیدا (<span dir=\"ltr\">Conditional Statements</span>). لێرەدا زمانەوانی پێشوەختە نەخشەی مێشکی بۆ کۆد نووسین نەخشاندووە.",
+        "<strong class=\"text-bone\">ڕەفتاری بەکارهێنەر وەک داتای پێشبینیکراو:</strong> کاتێک بەکارهێنەرێک سەیری وێبسایتێک یان ڕوکارێک دەکات، هەڵبژاردنەکانی لە نێوان کلیک کردن یان خوێندنەوەدا، لە ڕووی زانستییەوە دەچنە خانەی مۆدێلی بیرکاریانەی بڕیاردانەوە، کە لێرەدا دیزاینی <span dir=\"ltr\">UI/UX</span> و تێکەڵکردنی زمان وەک هاندەرێکی دەروونی و لۆژیکی کار دەکەن.",
+        "ئامانجی پەیڤکۆد لێرەدا تەنها ڕوونکردنەوەی کۆد نییە، بەڵکو دروستکردنی فەلسەفەیەکی نوێیە کە نیشانی دەدات چۆن لۆژیک، زمان و بڕیاردان پێکەوە جیهانی دیجیتاڵی داهاتوو بونیاد دەنێن."
+      ],
+      ar: [
+        "في العلم الحديث، لا تعد العلاقة بين الإنسان والآلة مجرد رابطة نحوية أو رياضية بحتة، بل هي أشبه بـ \"لعبة استراتيجية\" (<span dir=\"ltr\">Strategic Game</span>)؛ حيث تعمل الكلمات في اللغويات وأسطر الكود في البرمجة كخيارات أو \"تحركات\" تهدف إلى تحقيق أسمى غاية بأقل تكلفة ممكنة.",
+        "في مشروع (<span dir=\"ltr\">PeyvCode</span>)، يستند فهمنا لهذا التداخل المبتكر على ركائز عميقة:",
+        "<strong class=\"text-bone\">توازن ناش في اللغة والكود (<span dir=\"ltr\">Nash Equilibrium</span>):</strong> تماماً كما يسعى الطرفان في نظرية الألعاب لاتخاذ القرار الأمثل دون إلحاق الضرر بأحدهما، يتطلب بناء النظام البرمجي وصياغة النصوص وصول اللغويات والمنطق التقني إلى نقطة توازن تامة؛ بحيث لا تثقل كثافة الكود كاهل المنظومة، ولا يصبح معنى الرسالة غامضاً.",
+        "<strong class=\"text-bone\">البنية النحوية كأوامر مشروطة (<span dir=\"ltr\">Conditional Syntax</span>):</strong> في اللغات الطبيعية (كالكردية والعربية والإنجليزية)، تعتمد الشروط وتراكيب الجمل غالباً على الحالات الشرطية (<span dir=\"ltr\">If-Then</span>)، وهو ذات المنطق الذي تُبنى عليه الجمل الشرطية في لغات البرمجة (<span dir=\"ltr\">Conditional Statements</span>). لقد هيأت اللغويات مسبقاً خارطة الطريق لعقل المبرمج.",
+        "<strong class=\"text-bone\">سلوك المستخدم كبيانات متوقعة:</strong> حين يتأمل المستخدم موقعاً إلكترونياً أو واجهة رقمية، فإن خياراته بين النقر أو القراءة تخضع علمياً لنماذج صنع القرار الرياضية. وهنا تلعب واجهات <span dir=\"ltr\">UI/UX</span> والدمج اللغوي دور المحفز النفسي والمنطقي.",
+        "لا يقتصر هدف (<span dir=\"ltr\">PeyvCode</span>) هنا على توضيح الأكواد، بل صياغة فلسفة جديدة تبرز كيف تتكامل اللغة، والمنطق، وصنع القرار لبناء عالم المستقبل الرقمي."
+      ],
+      en: [
+        "In modern science, the relationship between human and machine is neither a purely grammatical nor a purely mathematical connection; rather, it resembles a \"Strategic Game.\" Here, words in linguistics and lines of code in programming both function as choices or \"moves\" aimed at achieving optimal outcomes with minimal friction.",
+        "At PeyvCode, our understanding of this innovative convergence rests upon profound foundations:",
+        "<strong class=\"text-bone\">Nash Equilibrium in Language and Code:</strong> Just as parties in game theory strive to reach the best decisions without mutual loss, constructing code systems and crafting texts requires linguistics and technical logic to achieve a state of absolute balance -- ensuring neither does the code weigh down the system nor the message remain ambiguous.",
+        "<strong class=\"text-bone\">Syntactic Structure as Conditional Commands:</strong> In natural languages, conditions and sentence structures heavily rely on conditional states (If-Then), mirroring the exact logic underlying conditional statements in programming languages. Linguistics has fundamentally pre-mapped the programmer's cognitive framework.",
+        "<strong class=\"text-bone\">User Behavior as Predictable Data:</strong> When a user navigates a website or digital interface, their choices between clicking or reading scientifically conform to mathematical decision-making models. Here, UI/UX design and linguistic integration act as both psychological and logical catalysts.",
+        "PeyvCode's objective here extends beyond explaining code; it is about articulating a new philosophy that demonstrates how language, logic, and decision-making intertwine to build the digital world of tomorrow."
+      ]
+    }
+  },
+  {
     id: 4,
     image: "Blag4.png",
     date: { ku: "٣ی ئایلولی ٢٠٢٦", ar: "3 سبتمبر 2026", en: "3 Sep 2026" },
