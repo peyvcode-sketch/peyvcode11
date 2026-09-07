@@ -197,8 +197,27 @@
     backdrop-filter: blur(8px);
     background: rgba(11,15,20,0.5);
   }
-  /* bento-style blog grid: "featured" cards stretch wider and, on large
-     screens, lay their image and text side by side instead of stacked. */
+  .blog-img-featured{
+    position:absolute; top:12px; inset-inline-end:12px;
+    backdrop-filter: blur(8px);
+    background: rgba(201,162,75,0.16);
+    border: 1px solid rgba(201,162,75,0.4);
+  }
+  /* bento-style blog grid -- these rules apply at EVERY screen size so
+     "featured" cards read as visually distinct even on mobile, where
+     the grid is a single column and the row-layout rules below (which
+     only kick in at lg) don't apply. */
+  .blog-card-featured{
+    border-color: rgba(201,162,75,0.28);
+  }
+  .blog-card-featured .blog-img-frame{
+    aspect-ratio: 16 / 8;
+  }
+  .blog-card-featured .blog-content h3{
+    font-size: 1.125rem;
+  }
+  /* on large screens the featured cards additionally switch to a
+     side-by-side image + text layout instead of stacked. */
   @media (min-width: 1024px){
     .blog-card-featured{ flex-direction: row; }
     .blog-card-featured .blog-img-frame{
@@ -1025,9 +1044,9 @@ const BLOG_POSTS = [
    2. TRANSLATIONS -- page chrome that isn't marked with data-ku/ar/en
 ===================================================================== */
 const LANG_META = {
-  ku: { dir: "rtl", code: "ku", label: "KU", readMore: "زیاتر بخوێنەرەوە" },
-  ar: { dir: "rtl", code: "ar", label: "AR", readMore: "اقرأ المزيد" },
-  en: { dir: "ltr", code: "en", label: "EN", readMore: "Read more" }
+  ku: { dir: "rtl", code: "ku", label: "KU", readMore: "زیاتر بخوێنەرەوە", featured: "دیارترین" },
+  ar: { dir: "rtl", code: "ar", label: "AR", readMore: "اقرأ المزيد", featured: "الأبرز" },
+  en: { dir: "ltr", code: "en", label: "EN", readMore: "Read more", featured: "Featured" }
 };
 
 let currentLang = "ku";
@@ -1052,6 +1071,7 @@ function renderBlog(lang){
         <span class="blog-img-corner br"></span>
         <span class="blog-img-tag text-amber text-[11px] font-mono border border-amber/30 rounded-full px-2.5 py-1">${post.tag[lang]}</span>
         <span class="blog-img-date text-fog text-[11px] font-mono rounded-full px-2 py-0.5">${post.date[lang]}</span>
+        ${featured ? `<span class="blog-img-featured text-gold text-[10px] font-mono uppercase tracking-wider rounded-full px-2.5 py-1">${LANG_META[lang].featured}</span>` : ""}
       </div>
       <div class="blog-content p-6 flex flex-col flex-1">
         <h3 class="font-disp font-bold text-bone text-base mb-2 leading-snug">${post.title[lang]}</h3>
