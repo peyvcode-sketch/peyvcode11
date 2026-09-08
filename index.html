@@ -197,44 +197,6 @@
     backdrop-filter: blur(8px);
     background: rgba(11,15,20,0.5);
   }
-  .blog-img-featured{
-    position:absolute; top:12px; inset-inline-end:12px;
-    backdrop-filter: blur(8px);
-    background: rgba(201,162,75,0.16);
-    border: 1px solid rgba(201,162,75,0.4);
-  }
-  /* bento-style blog grid -- these rules apply at EVERY screen size so
-     "featured" cards read as visually distinct even on mobile, where
-     the grid is a single column and the row-layout rules below (which
-     only kick in at lg) don't apply. */
-  .blog-card-featured{
-    border-color: rgba(201,162,75,0.28);
-  }
-  .blog-card-featured .blog-img-frame{
-    aspect-ratio: 16 / 8;
-  }
-  .blog-card-featured .blog-content h3{
-    font-size: 1.125rem;
-  }
-  /* on large screens the featured cards additionally switch to a
-     side-by-side image + text layout instead of stacked. */
-  @media (min-width: 1024px){
-    .blog-card-featured{ flex-direction: row; }
-    .blog-card-featured .blog-img-frame{
-      aspect-ratio: auto;
-      flex: 0 0 42%;
-      border-radius: 0;
-      border-start-start-radius: 0.75rem;
-      border-end-start-radius: 0.75rem;
-    }
-    .blog-card-featured .blog-content{
-      flex: 1 1 auto;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-    }
-    .blog-card-featured .blog-content h3{ font-size: 1.25rem; }
-  }
   .article-img-frame{
     position:relative; overflow:hidden; border-radius:0.75rem;
     aspect-ratio: 16/9;
@@ -284,6 +246,32 @@
   [dir="rtl"] #articleTitle, [dir="rtl"] #articleBody{ text-align: right; }
   [dir="rtl"] span[dir="ltr"]{ white-space: nowrap; unicode-bidi: isolate; display: inline-block; }
   [dir="ltr"] #articleTitle, [dir="ltr"] #articleBody{ text-align: left; }
+
+  #cvModal{ transition: opacity .3s ease; }
+  #cvModal.hidden{ display:none; }
+  #cvModal.modal-in #cvOverlay{ opacity:1; }
+  #cvModal #cvOverlay{ opacity:0; transition: opacity .3s ease; }
+  #cvModal.modal-in #cvPanel{ opacity:1; transform: translateY(0) scale(1); }
+  #cvPanel{
+    opacity:0; transform: translateY(14px) scale(.98);
+    transition: opacity .35s cubic-bezier(.16,1,.3,1), transform .35s cubic-bezier(.16,1,.3,1);
+    background: linear-gradient(180deg, #141A22, #0E131A);
+    position: relative;
+  }
+  #cvPanel::before{
+    content:"";
+    position:absolute; inset:0 0 auto 0; height:3px;
+    background: linear-gradient(90deg, transparent, #C9A24B, #E0A458, transparent);
+    border-radius: 0.75rem 0.75rem 0 0;
+  }
+  #cvBody p{ margin-bottom:1.1rem; line-height:1.95; }
+  #cvBody h4{ margin-top:1.6rem; margin-bottom:0.7rem; }
+  #cvBody h4:first-child{ margin-top:0; }
+  #cvBody ul{ margin-bottom:1.1rem; }
+  #cvBody li{ margin-bottom:0.6rem; line-height:1.85; }
+  #cvBody li:last-child{ margin-bottom:0; }
+  [dir="rtl"] #cvName, [dir="rtl"] #cvBody{ text-align: right; }
+  [dir="ltr"] #cvName, [dir="ltr"] #cvBody{ text-align: left; }
 </style>
 </head>
 
@@ -579,8 +567,11 @@
       بلاگ لە وێبسایتی «پەیڤکۆد» ئەو پەنجەرەیەیە کە تێیدا لایەنی زانیاری، ڕۆشنبیری و داهێنانی پڕۆژەکە دەردەکەوێت. ئەم بەشە وەک بنکەیەک دەبێت بۆ بڵاوکردنەوەی وتار و بابەتی قووڵ (وەک: تێکەڵکردنی زمان و کۆد، و بابەتی پڕزانیاری بە چەند زمانێک).
     </p>
 
-    <div id="blogGrid" class="grid sm:grid-cols-2 lg:grid-cols-4 gap-6 fade-up">
+    <div id="blogGrid" class="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-5 md:gap-6 fade-up">
       <!-- injected by JS from BLOG_POSTS (simulated DB fetch) -->
+      <!-- uniform 4-up grid: renders as two rows of four on desktop/tablet,
+           and two rows of four on mobile too (2 cols x 4 rows) so the
+           section never collapses into one long single-column stack -->
     </div>
   </div>
 </section>
@@ -611,6 +602,9 @@
         <h3 class="font-disp font-bold text-lg text-bone mb-1" data-ku="ئەحمەد" data-ar="أحمد" data-en="Ahmad">ئەحمەد</h3>
         <span class="block font-mono text-[11px] text-steelLight mb-3 tracking-wide" data-ku="هاوبەشی دامەزرێنەر و بەڕێوەبەری تەکنیکی" data-ar="شريك مؤسس ومدير تقني" data-en="Co-Founder & Technical Director">هاوبەشی دامەزرێنەر و بەڕێوەبەری تەکنیکی</span>
         <p class="text-sm text-fog" data-ku="بەرپرس لە لایەنی تەکنیکی، کۆدنەڤیسی و بنیاتنانی سیستمی بێگەرد و مۆدێرن." data-ar="مسؤول عن الجانب التقني، البرمجة، وبناء أنظمة متكاملة وحديثة." data-en="Leads the technical side -- coding and building polished, modern systems.">بەرپرس لە لایەنی تەکنیکی، کۆدنەڤیسی و بنیاتنانی سیستمی بێگەرد و مۆدێرن.</p>
+        <button type="button" id="ahmadCvBtn" class="cv-btn mt-4 text-[11px] md:text-xs font-semibold text-steelLight inline-flex items-center gap-1.5 cursor-pointer w-fit hover:text-bone hover:gap-2.5 transition-all">
+          <span data-ku="بینینی ژیاننامە" data-ar="عرض السيرة الذاتية" data-en="View CV">بینینی ژیاننامە</span> <span aria-hidden="true">→</span>
+        </button>
       </div>
       <div class="rounded-xl border hairline p-7 bg-surface/60 fade-up">
         <div class="w-12 h-12 rounded-full bg-amber/10 border border-amber/30 flex items-center justify-center text-amber mb-5">
@@ -622,6 +616,9 @@
         <h3 class="font-disp font-bold text-lg text-bone mb-1" data-ku="نورا" data-ar="نورا" data-en="Noura">نورا</h3>
         <span class="block font-mono text-[11px] text-amber mb-3 tracking-wide" data-ku="هاوبەشی دامەزرێنەر و بەڕێوەبەری ناوەڕۆک" data-ar="شريكة مؤسسة ومديرة محتوى" data-en="Co-Founder & Content Director">هاوبەشی دامەزرێنەر و بەڕێوەبەری ناوەڕۆک</span>
         <p class="text-sm text-fog" data-ku="بەرپرس لە لایەنی ناوەڕۆک، کۆپیرایتینگ، و داڕشتنی زمانەوانی و پەیامەکان." data-ar="مسؤولة عن جانب المحتوى، الكتابة الإعلانية، وصياغة اللغة والرسائل." data-en="Leads content, copywriting, and the shaping of language and messaging.">بەرپرس لە لایەنی ناوەڕۆک، کۆپیرایتینگ، و داڕشتنی زمانەوانی و پەیامەکان.</p>
+        <button type="button" id="noraCvBtn" class="cv-btn mt-4 text-[11px] md:text-xs font-semibold text-amber inline-flex items-center gap-1.5 cursor-pointer w-fit hover:text-bone hover:gap-2.5 transition-all">
+          <span data-ku="بینینی ژیاننامە" data-ar="عرض السيرة الذاتية" data-en="View CV">بینینی ژیاننامە</span> <span aria-hidden="true">→</span>
+        </button>
       </div>
     </div>
   </div>
@@ -750,6 +747,23 @@
     <h3 id="articleTitle" class="font-disp font-bold text-bone text-xl md:text-3xl leading-snug"></h3>
     <div class="article-divider"></div>
     <div id="articleBody" class="text-sm md:text-base text-fog"></div>
+  </div>
+</div>
+
+<!-- ============ CV / BIO MODAL ============ -->
+<div id="cvModal" class="hidden fixed inset-0 z-[60] flex items-center justify-center p-4">
+  <div id="cvOverlay" class="absolute inset-0 bg-black/70 backdrop-blur-sm"></div>
+  <div id="cvPanel" class="relative w-full max-w-2xl max-h-[85vh] overflow-y-auto rounded-xl border hairline p-6 md:p-10 shadow-2xl shadow-black/50">
+    <button id="cvClose" aria-label="Close" class="absolute top-5 end-5 w-8 h-8 flex items-center justify-center rounded-full border hairline text-fog hover:text-bone hover:border-gold/50 hover:bg-white/5 transition">
+      <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M6 6l12 12M18 6L6 18" stroke-width="2" stroke-linecap="round"/></svg>
+    </button>
+
+    <div id="cvIconWrap" class="w-14 h-14 rounded-full flex items-center justify-center mb-5"></div>
+
+    <span id="cvRole" class="block font-mono text-[11px] tracking-wide mb-2"></span>
+    <h3 id="cvName" class="font-disp font-bold text-bone text-xl md:text-3xl leading-snug"></h3>
+    <div class="article-divider"></div>
+    <div id="cvBody" class="text-sm md:text-base text-fog"></div>
   </div>
 </div>
 
@@ -1053,30 +1067,26 @@ let currentLang = "ku";
 
 function renderBlog(lang){
   const grid = document.getElementById("blogGrid");
-  /* bento rhythm: every group of 4 posts renders as
-     [wide, narrow, narrow, wide] -- on a 4-col grid this tiles as
-     (wide+narrow+narrow) / (wide+wide) / (narrow+narrow+wide), so the
-     "wide" cards alternate sides row after row instead of sitting in a
-     flat uniform grid. */
-  const pattern = [2, 1, 1, 2];
-  grid.innerHTML = BLOG_POSTS.map((post, i) => {
-    const featured = pattern[i % pattern.length] === 2;
+  /* uniform grid: all 8 cards render identically (no wide/featured
+     cards), so on a 4-col grid they tile cleanly as two rows of four,
+     and on the 2-col mobile grid as four rows of two -- always grouped,
+     never one long single-column stack. */
+  grid.innerHTML = BLOG_POSTS.map((post) => {
     return `
-    <article class="blog-card ${featured ? "blog-card-featured" : ""} rounded-xl overflow-hidden flex flex-col ${featured ? "sm:col-span-2" : ""}">
+    <article class="blog-card rounded-xl overflow-hidden flex flex-col">
       <div class="blog-img-frame">
         <img src="${post.image}" alt="${post.title[lang]}" loading="lazy">
         <div class="blog-img-sheen"></div>
         <div class="blog-img-overlay"></div>
         <span class="blog-img-corner tl"></span>
         <span class="blog-img-corner br"></span>
-        <span class="blog-img-tag text-amber text-[11px] font-mono border border-amber/30 rounded-full px-2.5 py-1">${post.tag[lang]}</span>
-        <span class="blog-img-date text-fog text-[11px] font-mono rounded-full px-2 py-0.5">${post.date[lang]}</span>
-        ${featured ? `<span class="blog-img-featured text-gold text-[10px] font-mono uppercase tracking-wider rounded-full px-2.5 py-1">${LANG_META[lang].featured}</span>` : ""}
+        <span class="blog-img-tag text-amber text-[10px] sm:text-[11px] font-mono border border-amber/30 rounded-full px-2 sm:px-2.5 py-0.5 sm:py-1">${post.tag[lang]}</span>
+        <span class="blog-img-date text-fog text-[10px] sm:text-[11px] font-mono rounded-full px-1.5 sm:px-2 py-0.5">${post.date[lang]}</span>
       </div>
-      <div class="blog-content p-6 flex flex-col flex-1">
-        <h3 class="font-disp font-bold text-bone text-base mb-2 leading-snug">${post.title[lang]}</h3>
-        <p class="text-sm text-fog mb-5 flex-1 leading-relaxed">${post.excerpt[lang]}</p>
-        <button type="button" class="read-more-btn text-xs font-semibold text-gold inline-flex items-center gap-1.5 cursor-pointer w-fit hover:text-amber hover:gap-2.5 transition-all" data-id="${post.id}">
+      <div class="blog-content p-3 sm:p-5 md:p-6 flex flex-col flex-1">
+        <h3 class="font-disp font-bold text-bone text-sm md:text-base mb-1.5 md:mb-2 leading-snug">${post.title[lang]}</h3>
+        <p class="text-xs md:text-sm text-fog mb-3 md:mb-5 flex-1 leading-relaxed line-clamp-3">${post.excerpt[lang]}</p>
+        <button type="button" class="read-more-btn text-[11px] md:text-xs font-semibold text-gold inline-flex items-center gap-1.5 cursor-pointer w-fit hover:text-amber hover:gap-2.5 transition-all" data-id="${post.id}">
           ${LANG_META[lang].readMore} <span aria-hidden="true">→</span>
         </button>
       </div>
@@ -1127,6 +1137,189 @@ document.getElementById("articleClose").addEventListener("click", closeArticle);
 document.getElementById("articleOverlay").addEventListener("click", closeArticle);
 document.addEventListener("keydown", (e) => {
   if (e.key === "Escape" && !articleModal.classList.contains("hidden")) closeArticle();
+});
+
+/* =====================================================================
+   CV / BIO DATA -- full professional bios for Ahmad & Nora
+===================================================================== */
+const CV_ICONS = {
+  ahmad: `<svg class="w-7 h-7" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="10" cy="14" r="6"/><path d="M14.5 9.5L20 4M14 4h6v6"/></svg>`,
+  nora: `<svg class="w-7 h-7" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="9" r="6"/><path d="M12 15v6M9 18h6"/></svg>`
+};
+
+const CV_STYLE = {
+  ahmad: { iconWrap: "bg-steel/10 border border-steel/40 text-steelLight", role: "text-steelLight" },
+  nora:  { iconWrap: "bg-amber/10 border border-amber/30 text-amber", role: "text-amber" }
+};
+
+function cvHeading(text){
+  return `<h4 class="font-disp font-bold text-bone text-sm md:text-base">${text}</h4>`;
+}
+function cvP(text){
+  return `<p>${text}</p>`;
+}
+function cvList(items){
+  return `<ul class="space-y-2.5 ps-5 list-disc marker:text-gold">${items.map(it => {
+    if (it.label){
+      return `<li><strong class="text-bone">${it.label}:</strong> ${it.text}</li>`;
+    }
+    return `<li>${it}</li>`;
+  }).join("")}</ul>`;
+}
+
+const CVS = {
+  ahmad: {
+    name: { ku: "ئەحمەد", ar: "الأستاذ أحمد", en: "Mr. Ahmad" },
+    role: { ku: "هاوبەشی دامەزرێنەر و بەڕێوەبەری تەکنیکی", ar: "شريك مؤسس ومدير تقني", en: "Co-Founder & Technical Director" },
+    ku: [
+      cvP("لە جیهانی مۆدێرنی تەکنەلۆژیادا، سەرکەوتن تەنها لە پسپۆڕییەکی تاکەکەسیدا خۆی نابینێتەوە، بەڵکو لەو توانایەدا دەبینرێت کە چۆن زانستە جیاوازەکان پێکەوە گرێ دەدرێن. وەک دامەزرێنەر و ناوەکی سەرەکیی پڕۆژەی (پەیڤکۆد)، خاوەنی ئەزموونێکی دەوڵەمەندم لە بواری تەکنەلۆژیا، ئەندازیاری و پەیوەندییەکاندا."),
+      cvHeading("١. بنەمای ئەکادیمی و پسپۆڕیی ئەندازیاری"),
+      cvP("دەرچووی بەشی ئەندازیاریی تەکنەلۆژیای ئەلیکترۆنیکم لە زانکۆی تەکنیکی باکوور (پەیمانگای تەکنیکی حەویجە)، کە بنەمایەکی بەهێزی زانستیی پێبەخشیووم بۆ تێگەیشتن لە قووڵایی هاردوێر و سیستەمە ئەلیکترۆنییەکان، ئەمەش دواتر بووە پردێک بۆ تێکەڵبوونم لەگەڵ جیهانی سۆفتوێر و پەرەپێداندا."),
+      cvHeading("٢. شارەزایی فراوان لە جیهانی پەرەپێدان و سیستەمەکاندا"),
+      cvP("مێژووی کارکردنم فرەچەشن و گشتگیرە، دیارترین بوارەکانی کارکردنم بریتین لە:"),
+      cvList([
+        { label: "بەرنامەسازی و دیزاین", text: "شارەزاییەکی قووڵم هەیە لە زمانەکانی وەک C#, C++, HTML, JavaScript, CSS لەگەڵ بەرنامە ئەندازیارییەکانی وەک AutoCAD, Cisco Packet Tracer, MATLAB، هەروەها وەک دیڤیلۆپەر لە بواری دروستکردن و دیزاینکردنی وێبسایت و ئەپڵیکەیشندا کار دەکەم." },
+        { label: "سیستەمە هەماهەنگەکان", text: "بەڕێوەبردن و شارەزایی تەواوم هەیە لە سیستەمەکانی گەڕان و کارپێکردن وەک Windows, Mac, Linux, Android, iOS، لەسەر ئاستی هاردوێر و سۆفتوێر." },
+        { label: "تۆڕەکان و خزمەتگوزاریی پێشکەوتوو (OSP)", text: "ئەزموونی زیاتر لە ساڵێک کارکردنم هەیە لە بواری تۆڕ و بەشی Outside Plant (OSP) لە کۆمپانیاکانی خزمەتگوزاریی ئینتەرنێتی کێبڵی ڕیشاڵی فایبەر ئۆپتیک، کە ئەزموونێکی مەیدانیی گەورەی پێبەخشیووم لەم بوارەدا." }
+      ]),
+      cvHeading("٣. کارە ئەکادیمی و زمانەوانییەکان"),
+      cvP("جگە لە لایەنی تەکنیکی، ڕۆڵێکی بەرچاوم هەبووە لە خزمەتکردنی کۆمەڵگەی خوێندکاری و زانستیدا، لەوانە:"),
+      cvList([
+        "ئامادەکردن و نووسینەوەی چەندین پڕۆژەی دەرچوون، ڕاپۆرتی زانستی و سیمینار بۆ خوێندکاران.",
+        "شارەزایی تەواو لە پاکێجی مایکرۆسۆفت و دیزاینی مەلزەمە و ناوەڕۆکی پەروەردەیی.",
+        "وەرگێڕان و ژێرنووسکردنی چەندین ڤیدیۆی زانستی و تەکنیکیی درێژ (کە ماوەکەیان لە کاتژمێرێک کەمتر نەبووە) بۆ زمانی عەرەبی بە شێوازێکی زۆر پیشەگەرانە."
+      ]),
+      cvP("ئەم تێکەڵە دەوڵەمەندەی نێوان ئەندازیاری، پەرەپێدانی سۆفتوێر، نێتوۆرک و داهێنانی فیکری، ئەوەیە کە ئەمڕۆ (پەیڤکۆد)ی کردووە بە پڕۆژەیەکی پێشەنگ و جیاواز.")
+    ].join(""),
+    ar: [
+      cvP("في المشهد التكنولوجي المعاصر، لا يُقاس النجاح بالتخصص الأحادي فحسب، بل بقدرة العقل على جسر الهوة بين مختلف العلوم التقنية. يُعد الأستاذ أحمد، المؤسس والركيزة الأساسية لمشروع (PeyvCode)، قامة تتمتع بسجل مهني ثرٍ يجمع ببراعة بين هندسة الإلكترونيات، وتطوير البرمجيات، والاتصالات الرقمية."),
+      cvHeading("١. الركيزة الأكاديمية والهندسية"),
+      cvP("تخرج الأستاذ أحمد من قسم هندسة تكنولوجيا الإلكترونيات في الجامعة التقنية الشمالية (المعهد التقني الحويجة)، وقد منحته هذه الشهادة أساساً علمياً متيناً لفهم أعماق العتاد الصلب (Hardware) والأنظمة الإلكترونية، مما مهّد له الطريق لدمجها بسلاسة مع عالم البرمجيات والتطوير."),
+      cvHeading("٢. الخبرة الواسعة في النظم والتطوير التقني"),
+      cvP("تتسم مسيرة الأستاذ أحمد بالتنوع والشمولية، وتتجلى أبرز محطاتها في:"),
+      cvList([
+        { label: "البرمجة والتصميم", text: "إجادة متقدمة للغات البرمجة وتطوير الواجهات وتصميم الويب والتطبيقات (C#, C++, HTML, JavaScript, CSS)، فضلاً عن إتقان البرمجيات الهندسية مثل (AutoCAD, Cisco Packet Tracer, MATLAB)." },
+        { label: "إدارة النظم والتشغيل", text: "خبرة ميدانية وتقنية شاملة في إدارة أنظمة التشغيل (Windows, Mac, Linux, Android, iOS) على مستوى البرمجيات والعتاد." },
+        { label: "الشبكات وبنى الاتصالات التحتية (OSP)", text: "عمل متخصص في مجالات الشبكات وقسم النبات الخارجي (Outside Plant - OSP) ضمن شركات خدمات الإنترنت المعتمدة على كابلات الألياف الضوئية (Fiber Optic)." }
+      ]),
+      cvHeading("٣. النشاط الأكاديمي واللغوي"),
+      cvP("إلى جانب تخصصه التقني، ترك الأستاذ أحمد بصمات واضحة في خدمة الأوساط الأكاديمية والطلبة من خلال:"),
+      cvList([
+        "إعداد وصياغة العديد من مشاريع التخرج، والتقارير العلمية، والندوات الأكاديمية.",
+        "الإتقان التام لحزم مايكروسوفت المكتبية، وتصميم المحتوى التعليمي والملازم.",
+        "ترجمة ودبلجة وتوطين العديد من الفيديوهات التقنية والعلمية المطوّلة (التي تتجاوز مدتها الساعة الواحدة) إلى اللغة العربية باحترافية عالية."
+      ]),
+      cvP("إن هذا التناغم الفريد بين الفكر الهندسي، وتطوير الأنظمة، وشبكات الاتصالات، والابتكار المعرفي هو ما صاغ القيمة الحقيقية وراء تميز منصة (PeyvCode).")
+    ].join(""),
+    en: [
+      cvP("In the contemporary technological landscape, success isn't measured by specialization in a single domain, but by the ability to bridge diverse technical disciplines. Mr. Ahmad, founder and core architect of PeyvCode, brings a rich professional background spanning electronic engineering, software development, and digital communications."),
+      cvHeading("1. Academic Foundation & Engineering Expertise"),
+      cvP("Mr. Ahmad graduated from the Electronic Technology Engineering Department at the Northern Technical University (Hawija Technical Institute). This gave him a solid scientific grounding in hardware and electronic systems, which later became the bridge into the world of software engineering and development."),
+      cvHeading("2. Broad Expertise in Development & Systems"),
+      cvP("His career has been diverse and comprehensive, with key areas of work including:"),
+      cvList([
+        { label: "Programming & Design", text: "Deep proficiency in languages such as C#, C++, HTML, JavaScript and CSS, alongside engineering software like AutoCAD, Cisco Packet Tracer and MATLAB, as well as web and app development." },
+        { label: "System Administration", text: "Full command of operating systems including Windows, Mac, Linux, Android and iOS, on both the hardware and software level." },
+        { label: "Networking & OSP", text: "Over a year of field experience in networking and Outside Plant (OSP) work at fiber-optic internet service providers." }
+      ]),
+      cvHeading("3. Academic & Language Work"),
+      cvP("Beyond the technical side, he has played a notable role serving the student and academic community, including:"),
+      cvList([
+        "Preparing and writing numerous graduation projects, scientific reports, and seminars for students.",
+        "Full command of the Microsoft Office suite, and design of educational materials and course packs.",
+        "Translating and subtitling multiple long technical and scientific videos (over an hour each) into Arabic to a highly professional standard."
+      ]),
+      cvP("This rich blend of engineering, software development, networking, and intellectual creativity is what has made PeyvCode a pioneering and distinctive project today.")
+    ].join("")
+  },
+  nora: {
+    name: { ku: "نورا", ar: "نورا", en: "Nora" },
+    role: { ku: "هاوبەشی دامەزرێنەر و بەڕێوەبەری ناوەڕۆک", ar: "شريكة مؤسسة ومديرة محتوى", en: "Co-Founder & Content Director" },
+    ku: [
+      cvP("لە دنیای فیکر و نووسینی هاوچەرخدا، گەورەترین شانازیی نووسەر ئەوەیە کە بەرهەمەکانی دەبنە مایەی گەشەپێدانی زەینیی کۆمەڵگا و پڕکردنەوەی کەلێنە ئەکادیمییەکان، تەنانەت ئەگەر لە پشت پەردەی شانۆوە کار بکات و مۆرکی داهێنانی خۆی لەسەر دڵی دەقەکان بەجێبهێڵێت، وەک کارێکی بێدەنگ بەڵام کاریگەر. نورا وەک نووسەرێکی قووڵبینی بوارە جیاوازەکان، وەرگێڕێکی بەتوانا و توێژەرێکی ئەکادیمی، خاوەنی مێژوویەکی دەوڵەمەندە لە داڕشتنی هزری و زانستیدا."),
+      cvHeading("١. شوناسی نووسەر و توێژەری ئەکادیمی"),
+      cvP("سەرەڕای ئەوەی ژینگەی ئەکادیمیی گشتی زۆرجار تەنها بەدوای بڕوانامە کاغەزییەکاندا دەگەڕێت، قووڵایی مەعریفی و هێزی زەینیی نورا لە ڕێگەی کارە کردارییەکانەوە سەلمێنراوە. ئەو پسپۆڕە لە:"),
+      cvList([
+        { label: "داڕشتنی ڕیسێرچ و ڕاپۆرتی ئەکادیمی", text: "نووسینی توێژینەوەی چڕ و ڕاپۆرتی زانستیی ئاستبەرز کە ڕەچاوکردنی وردترین پێوەری توێژینەوەی تێدا کراوە." },
+        { label: "نووسینی مەقالەی فیکری و قووڵ", text: "داڕشتنی وتاری چەندلایەنە کە دەبنە سەکۆیەکی بەهێز بۆ گەیاندنی پەیامەکان و گۆڕینی تێڕوانینی خوێنەر." }
+      ]),
+      cvHeading("٢. هونەری وەرگێڕان و گواستنەوەی زانیاری"),
+      cvP("وەرگێڕان لای نورا تەنها گواستنەوەی وشە نییە لە زمانێکەوە بۆ زمانێکی تر، بەڵکو پرۆسەیەکی تێگەیشتن و داتاشینەوەی پەیامەکانە بە شێوازێکی زمانەوانیی پاراو و ڕەسەن. ئەو توانایەکی بێوێنەی هەیە لە وەرگێڕان و دابینکردنی ناوەڕۆکی هزری و زانستیدا کە تێیدا ڕوحی دەقەکە دەپارێزێت."),
+      cvHeading("٣. ژیریی پەنهان و کاریگەریی بێدەنگ"),
+      cvP("یەکێک لە تایبەتمەندییە هەرە دەگمەنەکانی کارکردنی نورا ئەوەیە کە هێزی نووسینەکانی و قورسایی ڕیسێرچەکانی بوونەتە بنەمای سەرکەوتنی زۆرێک لە پڕۆژە و کەسایەتییەکان، وەک مێشکێکی پشتەوەی کارەکان (Ghostwriter & Researcher) کە بە دەستنووس و قەڵەمی ئەو، بەرهەمەکان دەدرەوشێنەوە. ئەمەش نەک هەر نیشانەی دواکەوتن نییە، بەڵکو بەڵگەیە لەسەر پێگەیشتوویی فیکری، لێهاتوویی پیشەگەرانە و باڵادەستیی مەعریفیی ئەو کەسەی کە بەرهەمەکانی هێندە بەهێزن خەڵکی دیکە شانازییان پێوە دەکەن."),
+      cvP("ئەم تێکەڵە دەوڵەمەندەی نێوان نووسینی ئەکادیمی، وەرگێڕانی قووڵ، و لێهاتوویی لە داڕشتنی زانستیدا، نورا دەکاتە نووسەرێکی پێشەنگ کە پایەی زانستیی لە سەرووی هەموو پێناسە تەقلیدییەکانەوەیە.")
+    ].join(""),
+    ar: [
+      cvP("في عالم الفكر والكتابة المعاصرة، تكمن أسمى آيات الفخر للكاتب في أن تصبح أعماله ركيزةً لازدهار الوعي المجتمعي وسد الثغرات الأكاديمية، حتى وإن عملت من خلف الكواليس تاركةً بصمات إبداعها على صفحات النصوص، كعمل صامت لكنه بالغ التأثير. تتألق نورا ككاتبة عميقة الرؤية في مختلف الحقول، ومترجمة بارعة، وباحثة أكاديمية تمتلك سجلاً حافلاً في صياغة المعرفة والعلوم."),
+      cvHeading("١. هوية الكاتبة والباحثة الأكاديمية"),
+      cvP("على الرغم من أن البيئة الأكاديمية التقليدية غالباً ما تلهث خلف الشهادات الورقية، إلا أن العمق المعرفي والقدرات الذهنية الفذة لنورا تجلت بوضوح من خلال منجزاتها الفعلية، فهي متخصصة في:"),
+      cvList([
+        { label: "صياغة البحوث والتقارير الأكاديمية", text: "كتابة دراسات بحثية مركزة وتقارير علمية عالية المستوى تراعى فيها أدق معايير المنهجية البحثية." },
+        { label: "كتابة المقالات الفكرية والعميقة", text: "صياغة مقالات متعددة الأبعاد تشكل منصة قوية لإيصال الرسائل وتغيير منظور القارئ." }
+      ]),
+      cvHeading("٢. فن الترجمة ونقل المعرفة"),
+      cvP("لا تقتصر الترجمة لدى نورا على مجرد نقل الألفاظ من لغة إلى أخرى، بل هي عملية استيعاب وإعادة صياغة للرسائل بأسلوب لغوي بليغ وأصيل، حيث تمتلك قدرة فريدة على ترجمة وتوفير محتوى فكري وعلمي يحافظ على روح النص الأصلي."),
+      cvHeading("٣. الذكاء الخفي والأثر الصامت"),
+      cvP("تتمثل إحدى أبرز الخصائص الفريدة لعمل نورا في أن قوة كتاباتها وثقل بحوثها قد غَدَتا الركيزة الأساسية لنجاح العديد من المشاريع والشخصيات، كعقل مدبر يقف خلف الكواليس (Ghostwriter & Researcher) تتألق الأعمال بأقلامها وأفكارها. إن هذا الواقع ليس دليلاً على تأخر أو قصور، بل هو البرهان الساطع على النضج الفكري، والاحترافية العالية، والسيادة المعرفية لشخصية تتجاوز قيمتها الحقيقية كافة التعريفات التقليدية."),
+      cvP("إن هذا التناغم الثرّي بين الكتابة الأكاديمية، والترجمة العميقة، والبراعة في الصياغة المعرفية، يجعل من نورا كاتبة رائدة تعلو قيمتها العلمية فوق كل القيود التقليدية.")
+    ].join(""),
+    en: [
+      cvP("In the realm of contemporary thought and writing, a writer's ultimate pride lies in crafting works that drive intellectual growth and bridge academic gaps -- even when working behind the scenes, leaving a creative fingerprint on the soul of the text, as a quiet yet profound contribution. As a deep-visioned writer across diverse fields, a skilled translator, and an academic researcher, Nora carries a rich legacy in shaping intellectual and scientific discourse."),
+      cvHeading("1. Identity as a Writer & Academic Researcher"),
+      cvP("While the traditional academic world often chases paper credentials, Nora's depth of knowledge and intellectual rigor are proven through tangible achievements. She specializes in:"),
+      cvList([
+        { label: "Academic Research & Reports", text: "Writing focused research studies and high-level scientific reports that follow the strictest research standards." },
+        { label: "Intellectual & In-depth Articles", text: "Crafting multi-dimensional essays that serve as a strong platform for delivering messages and shifting the reader's perspective." }
+      ]),
+      cvHeading("2. The Art of Translation & Knowledge Transfer"),
+      cvP("For Nora, translation is more than moving words from one language to another -- it's a process of understanding and re-shaping messages in an eloquent, authentic style, with a unique ability to translate intellectual and scientific content while preserving the spirit of the original text."),
+      cvHeading("3. Quiet Intelligence, Silent Impact"),
+      cvP("One of the rarest traits in Nora's work is that the strength of her writing and the depth of her research have become the foundation behind the success of many projects and public figures -- working as a ghostwriter and researcher whose pen brings other people's work to life. Far from being a drawback, this is proof of intellectual maturity, professionalism, and command of the subject -- someone whose real value goes beyond conventional titles."),
+      cvP("This rich blend of academic writing, deep translation, and skillful knowledge-crafting makes Nora a leading writer whose scholarly value rises above traditional labels.")
+    ].join("")
+  }
+};
+
+const cvModal = document.getElementById("cvModal");
+const cvPanel = document.getElementById("cvPanel");
+
+function openCv(key){
+  const cv = CVS[key];
+  if (!cv) return;
+  const lang = currentLang;
+  const style = CV_STYLE[key];
+
+  document.getElementById("cvIconWrap").className = "w-14 h-14 rounded-full flex items-center justify-center mb-5 " + style.iconWrap;
+  document.getElementById("cvIconWrap").innerHTML = CV_ICONS[key];
+  document.getElementById("cvRole").className = "block font-mono text-[11px] tracking-wide mb-2 " + style.role;
+  document.getElementById("cvRole").textContent = cv.role[lang];
+  document.getElementById("cvName").textContent = cv.name[lang];
+  document.getElementById("cvBody").innerHTML = cv[lang];
+
+  cvModal.dataset.openKey = key;
+  cvModal.classList.remove("hidden");
+  document.body.style.overflow = "hidden";
+  cvPanel.scrollTop = 0;
+  requestAnimationFrame(() => requestAnimationFrame(() => {
+    cvModal.classList.add("modal-in");
+  }));
+}
+
+function closeCv(){
+  cvModal.classList.remove("modal-in");
+  document.body.style.overflow = "";
+  setTimeout(() => {
+    cvModal.classList.add("hidden");
+    delete cvModal.dataset.openKey;
+  }, 300);
+}
+
+document.getElementById("ahmadCvBtn").addEventListener("click", () => openCv("ahmad"));
+document.getElementById("noraCvBtn").addEventListener("click", () => openCv("nora"));
+document.getElementById("cvClose").addEventListener("click", closeCv);
+document.getElementById("cvOverlay").addEventListener("click", closeCv);
+document.addEventListener("keydown", (e) => {
+  if (e.key === "Escape" && !cvModal.classList.contains("hidden")) closeCv();
 });
 
 function openLangDrawer(){
