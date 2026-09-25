@@ -128,6 +128,19 @@
   .wa-btn{ transition: transform .25s ease, box-shadow .25s ease; }
   .wa-btn:hover{ transform: translateY(-3px); }
 
+  .fb-btn{
+    transition: transform .3s cubic-bezier(.16,1,.3,1), box-shadow .3s ease, border-color .3s ease;
+  }
+  .fb-btn:hover{
+    transform: translateY(-4px) scale(1.06);
+    box-shadow: 0 18px 34px -14px rgba(91,155,176,0.45);
+    border-color: rgba(91,155,176,0.55);
+  }
+  .fb-btn img{
+    transition: transform .3s ease;
+  }
+  .fb-btn:hover img{ transform: scale(1.08); }
+
   .blog-card{
     background: linear-gradient(180deg, rgba(24,31,42,0.7), rgba(15,20,28,0.7));
     border: 1px solid rgba(201,162,75,0.12);
@@ -700,7 +713,14 @@
   <div class="max-w-4xl mx-auto text-center">
     <span class="font-mono text-xs text-amber tracking-widest fade-up" data-ku="پەیوەندی" data-ar="تواصل" data-en="CONTACT">پەیوەندی</span>
     <h2 class="font-disp font-bold text-2xl md:text-4xl text-bone mt-3 mb-5 fade-up" data-ku="پەیوەندیمان پێوە بکەن" data-ar="ابدأ المحادثة" data-en="Start the conversation">پەیوەندیمان پێوە بکەن</h2>
-    <p class="max-w-xl mx-auto text-fog text-sm md:text-base mb-14 fade-up" data-ku="پرۆژەکەت لەگەڵ بەشی گونجاو باس بکە، بە خۆشحاڵییەوە وەڵامت دەدەینەوە." data-ar="تحدث عن مشروعك مع القسم المناسب، وسنكون سعداء بالرد عليك." data-en="Discuss your project with the right department, and we'll be happy to get back to you.">پرۆژەکەت لەگەڵ بەشی گونجاو باس بکە، بە خۆشحاڵییەوە وەڵامت دەدەینەوە.</p>
+    <p class="max-w-xl mx-auto text-fog text-sm md:text-base mb-8 fade-up" data-ku="پرۆژەکەت لەگەڵ بەشی گونجاو باس بکە، بە خۆشحاڵییەوە وەڵامت دەدەینەوە." data-ar="تحدث عن مشروعك مع القسم المناسب، وسنكون سعداء بالرد عليك." data-en="Discuss your project with the right department, and we'll be happy to get back to you.">پرۆژەکەت لەگەڵ بەشی گونجاو باس بکە، بە خۆشحاڵییەوە وەڵامت دەدەینەوە.</p>
+
+    <div class="flex justify-center mb-10 fade-up">
+      <a href="https://www.facebook.com/share/14p7iYVZCAw/" target="_blank" rel="noopener" aria-label="Facebook"
+         class="fb-btn inline-flex items-center justify-center w-12 h-12 rounded-full border border-steel/25 bg-gradient-to-br from-[#0F1920] via-[#0D1319] to-[#0B1116]">
+        <img src="logof.png" alt="" class="w-6 h-6 object-contain">
+      </a>
+    </div>
 
     <div class="grid sm:grid-cols-2 gap-5 items-stretch">
       <a href="https://wa.me/9647728931728" target="_blank" rel="noopener"
